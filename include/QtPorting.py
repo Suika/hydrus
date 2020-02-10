@@ -950,7 +950,7 @@ def AddToLayout( layout, item, flag = None, alignment = None, sizePolicy = None 
             
             item.setSizePolicy( sizePolicy[0], sizePolicy[1] )
     
-    expand_both_ways = flag in ( CC.FLAGS_EXPAND_BOTH_WAYS, CC.FLAGS_EXPAND_BOTH_WAYS_POLITE, CC.FLAGS_EXPAND_BOTH_WAYS_SHY )
+    expand_both_ways = flag in ( CC.FLAGS_EXPAND_BOTH_WAYS, CC.FLAGS_EXPAND_SIZER_BOTH_WAYS, CC.FLAGS_EXPAND_BOTH_WAYS_POLITE, CC.FLAGS_EXPAND_BOTH_WAYS_SHY )
     zero_border = False
     
     # This is kind of a mess right now, adjustments might be needed
@@ -1006,10 +1006,6 @@ def AddToLayout( layout, item, flag = None, alignment = None, sizePolicy = None 
         #item.setContentsMargins( 0, 0, 0, 0 )
     elif flag == CC.FLAGS_EXPAND_SIZER_BOTH_WAYS:
         zero_border = True
-        if isinstance( layout, QW.QVBoxLayout ) or isinstance( layout, QW.QHBoxLayout ):
-            
-            layout.setStretchFactor( item, 5 )
-            
         
         #item.setContentsMargins( 0, 0, 0, 0 )
         
@@ -1057,7 +1053,7 @@ def AddToLayout( layout, item, flag = None, alignment = None, sizePolicy = None 
         
         if isinstance( layout, QW.QVBoxLayout ) or isinstance( layout, QW.QHBoxLayout ):
             
-            if flag == CC.FLAGS_EXPAND_BOTH_WAYS:
+            if flag in ( CC.FLAGS_EXPAND_BOTH_WAYS, CC.FLAGS_EXPAND_SIZER_BOTH_WAYS ):
                 
                 stretch_factor = 5
                 
@@ -1185,11 +1181,13 @@ def GetBackgroundColour( widget ):
     return widget.palette().color( QG.QPalette.Window )
 
 
+CallAfterEventType = QC.QEvent.Type( QC.QEvent.registerEventType() )
+
 class CallAfterEvent( QC.QEvent ):
     
     def __init__( self, fn, *args, **kwargs ):
         
-        QC.QEvent.__init__( self, QC.QEvent.User )
+        QC.QEvent.__init__( self, CallAfterEventType )
         
         self._fn = fn
         self._args = args
@@ -1213,7 +1211,7 @@ class CallAfterEventFilter( QC.QObject ):
     
     def eventFilter( self, watched, event ):
         
-        if event.type() == QC.QEvent.User and isinstance( event, CallAfterEvent ):
+        if event.type() == CallAfterEventType and isinstance( event, CallAfterEvent ):
             
             event.Execute()
             
@@ -1226,7 +1224,9 @@ class CallAfterEventFilter( QC.QObject ):
 def CallAfter( fn, *args, **kwargs ):
     
     QW.QApplication.instance().postEvent( QW.QApplication.instance().call_after_catcher, CallAfterEvent( fn, *args, **kwargs ) )
-
+    
+    QW.QApplication.instance().eventDispatcher().wakeUp()
+    
 
 def ClearLayout( layout, delete_widgets = False ):
     
@@ -1253,7 +1253,7 @@ def ClearLayout( layout, delete_widgets = False ):
 
         layout.removeItem( item )
         
-
+    
 def ListWidgetGetStringSelection( widget ):
     
     for i in range( widget.count() ):
@@ -1261,8 +1261,7 @@ def ListWidgetGetStringSelection( widget ):
         if widget.item( i ).isSelected(): return widget.item( i ).text()
 
     return None
-
-
+    
 def GetClientData( widget, idx ):
     
     if isinstance( widget, QW.QComboBox ):
