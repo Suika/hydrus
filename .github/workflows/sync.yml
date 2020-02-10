@@ -1,0 +1,14 @@
+name: Sync Fork
+on:
+  schedule:
+  - cron: '0 23 * * *'
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: TG908/fork-sync@v1.1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        owner: hydrusnetwork
+        base: master
+        head: master

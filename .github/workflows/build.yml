@@ -1,0 +1,86 @@
+name: buildx
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+
+jobs:
+  build-client:
+    runs-on: [ubuntu-latest]
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+      -
+        name: Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+      - 
+        name: Docker login
+        run: |
+          docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${DOCKER_REGISTRY_PASSWORD}"
+        env:
+          DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          DOCKER_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+      -
+        name: Run Buildx
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
+            --cache-from suika/hydrus:client-build-cache \
+            --cache-to suika/hydrus:client-build-cache \
+            --output "type=image,push=true" \
+            --tag suika/hydrus:latest-experimental \
+            --tag suika/hydrus:v$(grep SOFTWARE_VERSION include/HydrusConstants.py | cut -d " " -f 3) \
+            --file ./docker/client/Dockerfile .
+      - 
+        name: Docker logout
+        run: |
+          docker logout
+        env:
+          DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+  build-server:
+    runs-on: [ubuntu-latest]
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+      -
+        name: Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+      - 
+        name: Docker login
+        run: |
+          docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${DOCKER_REGISTRY_PASSWORD}"
+        env:
+          DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          DOCKER_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+      -
+        name: Run Buildx
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
+            --cache-from suika/hydrus:server-build-cache \
+            --cache-to suika/hydrus:server-build-cache \
+            --output "type=image,push=true" \
+            --tag suika/hydrus:server-experimental \
+            --tag suika/hydrus:server-v$(grep SOFTWARE_VERSION include/HydrusConstants.py | cut -d " " -f 3) \
+            --file ./docker/server/Dockerfile .
+      - 
+        name: Docker logout
+        run: |
+          docker logout
+        env:
+          DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
