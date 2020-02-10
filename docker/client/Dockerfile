@@ -17,7 +17,7 @@ HEALTHCHECK --interval=20s --timeout=10s --retries=3 --start-period=30s CMD ! su
 ENTRYPOINT ["/bin/sh", "/opt/hydrus/docker/client/entrypoint.sh"]
 LABEL git="https://github.com/hydrusnetwork/hydrus"
 
-RUN apk --no-cache add fvwm x11vnc xvfb supervisor py3-beautifulsoup4 py3-psutil py3-pysocks py3-requests py3-twisted py3-yaml qt5-qtcharts py3-lz4 ffmpeg  py3-pillow py3-numpy py3-numpy py3-qt5 mpv \
+RUN apk --no-cache add jq fvwm x11vnc xvfb supervisor py3-beautifulsoup4 py3-psutil py3-pysocks py3-requests py3-twisted py3-yaml qt5-qtcharts py3-lz4 ffmpeg  py3-pillow py3-numpy py3-numpy py3-qt5 mpv \
  && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing font-noto font-noto-emoji \
  && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community font-noto-cjk
 RUN pip install qtpy Send2Trash html5lib twisted python-mpv
@@ -28,8 +28,8 @@ RUN set -xe \
     && adduser -h /opt/hydrus -u 1000 -H -S -G hydrus hydrus
 
 RUN mkdir -p /opt/noVNC/utils/websockify \
- && wget https://github.com/novnc/noVNC/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/noVNC \
- && wget https://github.com/novnc/websockify/archive/master.tar.gz -qO- | tar xzf - --strip-components=1 -C /opt/noVNC/utils/websockify \
+ && wget $(wget https://api.github.com/repos/novnc/noVNC/releases/latest -qO- | jq  -r '.tarball_url') -qO- | tar xzf - --strip-components=1 -C /opt/noVNC \
+ && wget $(wget https://api.github.com/repos/novnc/websockify/releases/latest -qO- | jq  -r '.tarball_url') -qO- | tar xzf - --strip-components=1 -C /opt/noVNC/utils/websockify \
  && sed -i -- "s/ps -p/ps -o pid | grep/g" /opt/noVNC/utils/launch.sh \
  && chown hydrus:hydrus -R /opt/noVNC
 
