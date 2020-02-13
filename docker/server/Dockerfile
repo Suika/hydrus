@@ -29,7 +29,7 @@ RUN set -xe \
     && adduser -h /opt/hydrus -u 1000 -H -S -G hydrus hydrus
 
 COPY --chown=hydrus . /opt/hydrus
-COPY --chown=hydrus --from=swfbuild /src/swfrender /opt/hydrus/bin/swfrender_linux
+COPY --chown=hydrus --from=suika/swftools:2013-04-09-1007 /swftools/swfrender /opt/hydrus/bin/swfrender_linux
 
 VOLUME /opt/hydrus/db
 

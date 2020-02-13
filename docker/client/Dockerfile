@@ -1,13 +1,3 @@
-FROM suika/opencv-video-minimal:4.2-py3.7.5 as swfbuild
-RUN apk add build-base git libjpeg-turbo-dev freetype-dev zlib-dev && \
-    wget http://swftools.org/swftools-2013-04-09-1007.tar.gz && \
-    tar xzf swftools-2013-04-09-1007.tar.gz && cd swftools* && \
-    wget "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD" -O config.guess && \
-    sed -i 's/config.guess"/config.guess" $(uname -m)/' configure && \
-    sed -e 's/-o -L/#-o -L/' -i swfs/Makefile.in && \
-    LDFLAGS="-static" ./configure && LDFLAGS="-all-static" make && \
-    mv src /src
-
 FROM suika/opencv-video-minimal:4.2-py3.7.5
 
 ARG UID
@@ -34,7 +24,7 @@ RUN mkdir -p /opt/noVNC/utils/websockify \
  && chown hydrus:hydrus -R /opt/noVNC
 
 COPY --chown=hydrus . /opt/hydrus
-COPY --chown=hydrus --from=swfbuild /src/swfrender /opt/hydrus/bin/swfrender_linux
+COPY --chown=hydrus --from=suika/swftools:2013-04-09-1007 /swftools/swfrender /opt/hydrus/bin/swfrender_linux
 
 RUN mv /opt/hydrus/docker/client/supervisord.conf /etc/supervisord.conf && \
     mv /opt/hydrus/docker/client/novnc/index.html /opt/noVNC/index.html && \
