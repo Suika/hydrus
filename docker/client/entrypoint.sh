@@ -17,4 +17,12 @@ fi
 #  find /opt/hydrus/ -not -path "/opt/hydrus/db/*" -exec chown hydrus:hydrus "{}" \;
 #fi
 
-supervisord -c /etc/supervisord.conf
+stop() {
+  pkill supervisord
+  sleep 1
+}
+
+trap "stop" SIGTERM
+
+supervisord -c /etc/supervisord.conf &
+wait $!

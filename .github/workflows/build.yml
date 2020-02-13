@@ -34,10 +34,9 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
-            --cache-from suika/hydrus:client-build-cache \
-            --cache-to suika/hydrus:client-build-cache \
+            --cache-from suika/hydrus:latest \
             --output "type=image,push=true" \
-            --tag suika/hydrus:latest-experimental \
+            --tag suika/hydrus:latest \
             --tag suika/hydrus:v$(grep SOFTWARE_VERSION include/HydrusConstants.py | cut -d " " -f 3) \
             --file ./docker/client/Dockerfile .
       - 
@@ -73,10 +72,9 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
-            --cache-from suika/hydrus:server-build-cache \
-            --cache-to suika/hydrus:server-build-cache \
+            --cache-from suika/hydrus:server \
             --output "type=image,push=true" \
-            --tag suika/hydrus:server-experimental \
+            --tag suika/hydrus:server \
             --tag suika/hydrus:server-v$(grep SOFTWARE_VERSION include/HydrusConstants.py | cut -d " " -f 3) \
             --file ./docker/server/Dockerfile .
       - 
