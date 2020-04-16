@@ -21,7 +21,7 @@ ENTRYPOINT ["/bin/sh", "/opt/hydrus/docker/server/entrypoint.sh"]
 LABEL git="https://github.com/hydrusnetwork/hydrus"
 
 RUN apk --no-cache add py3-beautifulsoup4 py3-psutil py3-pysocks py3-requests py3-twisted py3-yaml py3-lz4 ffmpeg py3-pillow py3-numpy py3-openssl py3-service_identity openssl su-exec
-RUN pip install Send2Trash html5lib twisted
+RUN pip install Send2Trash html5lib twisted cloudscrape
 
 RUN set -xe \
     && mkdir -p /opt/hydrus \
