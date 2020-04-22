@@ -37,7 +37,7 @@ jobs:
             --cache-from suika/hydrus:latest \
             --output "type=image,push=true" \
             --tag suika/hydrus:latest \
-            --tag suika/hydrus:v$(grep SOFTWARE_VERSION hydrus/HydrusConstants.py | cut -d " " -f 3) \
+            --tag suika/hydrus:v$(grep SOFTWARE_VERSION hydrus/core/HydrusConstants.py | cut -d " " -f 3) \
             --file ./docker/client/Dockerfile .
       - 
         name: Docker logout
@@ -75,7 +75,7 @@ jobs:
             --cache-from suika/hydrus:server \
             --output "type=image,push=true" \
             --tag suika/hydrus:server \
-            --tag suika/hydrus:server-v$(grep SOFTWARE_VERSION hydrus/HydrusConstants.py | cut -d " " -f 3) \
+            --tag suika/hydrus:server-v$(grep SOFTWARE_VERSION hydrus/core/HydrusConstants.py | cut -d " " -f 3) \
             --file ./docker/server/Dockerfile .
       - 
         name: Docker logout
