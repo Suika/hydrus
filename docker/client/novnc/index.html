@@ -17,6 +17,10 @@
 
     <meta charset="utf-8">
 
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+                Remove this if you use the .htaccess -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
     <!-- Icons (see app/images/icons/Makefile for what the sizes are for) -->
     <link rel="icon" sizes="16x16" type="image/png" href="app/images/icons/icon.png">
     <link rel="icon" sizes="24x24" type="image/png" href="app/images/icons/icon.png">
@@ -32,7 +36,7 @@
     <link rel="icon" sizes="152x152" type="image/png" href="app/images/icons/icon.png">
     <link rel="icon" sizes="192x192" type="image/png" href="app/images/icons/icon.png">
     <!-- Firefox currently mishandles SVG, see #1419039
-    <link rel="icon" sizes="any" type="image/svg+xml" href="app/images/icons/novnc-icon.svg">
+    <link rel="icon" sizes="any" type="image/png" href="app/images/icons/icon.png">
     -->
     <!-- Repeated last so that legacy handling will pick this -->
     <link rel="icon" sizes="16x16" type="image/png" href="app/images/icons/icon.png">
@@ -90,49 +94,35 @@
 
             <!--noVNC Touch Device only buttons-->
             <div id="noVNC_mobile_buttons">
-                <input type="image" alt="No mousebutton" src="app/images/mouse_none.svg"
-                    id="noVNC_mouse_button0" class="noVNC_button"
-                    title="Active Mouse Button">
-                <input type="image" alt="Left mousebutton" src="app/images/mouse_left.svg"
-                    id="noVNC_mouse_button1" class="noVNC_button"
-                    title="Active Mouse Button">
-                <input type="image" alt="Middle mousebutton" src="app/images/mouse_middle.svg"
-                    id="noVNC_mouse_button2" class="noVNC_button"
-                    title="Active Mouse Button">
-                <input type="image" alt="Right mousebutton" src="app/images/mouse_right.svg"
-                    id="noVNC_mouse_button4" class="noVNC_button"
-                    title="Active Mouse Button">
                 <input type="image" alt="Keyboard" src="app/images/keyboard.svg"
                     id="noVNC_keyboard_button" class="noVNC_button" title="Show Keyboard">
             </div>
 
             <!-- Extra manual keys -->
-            <div id="noVNC_extra_keys">
-                <input type="image" alt="Extra keys" src="app/images/toggleextrakeys.svg"
-                    id="noVNC_toggle_extra_keys_button" class="noVNC_button"
-                    title="Show Extra Keys">
-                <div class="noVNC_vcenter">
-                <div id="noVNC_modifiers" class="noVNC_panel">
-                    <input type="image" alt="Ctrl" src="app/images/ctrl.svg"
-                        id="noVNC_toggle_ctrl_button" class="noVNC_button"
-                        title="Toggle Ctrl">
-                    <input type="image" alt="Alt" src="app/images/alt.svg"
-                        id="noVNC_toggle_alt_button" class="noVNC_button"
-                        title="Toggle Alt">
-                    <input type="image" alt="Windows" src="app/images/windows.svg"
-                        id="noVNC_toggle_windows_button" class="noVNC_button"
-                        title="Toggle Windows">
-                    <input type="image" alt="Tab" src="app/images/tab.svg"
-                        id="noVNC_send_tab_button" class="noVNC_button"
-                        title="Send Tab">
-                    <input type="image" alt="Esc" src="app/images/esc.svg"
-                        id="noVNC_send_esc_button" class="noVNC_button"
-                        title="Send Escape">
-                    <input type="image" alt="Ctrl+Alt+Del" src="app/images/ctrlaltdel.svg"
-                        id="noVNC_send_ctrl_alt_del_button" class="noVNC_button"
-                        title="Send Ctrl-Alt-Del">
-                </div>
-                </div>
+            <input type="image" alt="Extra keys" src="app/images/toggleextrakeys.svg"
+                id="noVNC_toggle_extra_keys_button" class="noVNC_button"
+                title="Show Extra Keys">
+            <div class="noVNC_vcenter">
+            <div id="noVNC_modifiers" class="noVNC_panel">
+                <input type="image" alt="Ctrl" src="app/images/ctrl.svg"
+                    id="noVNC_toggle_ctrl_button" class="noVNC_button"
+                    title="Toggle Ctrl">
+                <input type="image" alt="Alt" src="app/images/alt.svg"
+                    id="noVNC_toggle_alt_button" class="noVNC_button"
+                    title="Toggle Alt">
+                <input type="image" alt="Windows" src="app/images/windows.svg"
+                    id="noVNC_toggle_windows_button" class="noVNC_button"
+                    title="Toggle Windows">
+                <input type="image" alt="Tab" src="app/images/tab.svg"
+                    id="noVNC_send_tab_button" class="noVNC_button"
+                    title="Send Tab">
+                <input type="image" alt="Esc" src="app/images/esc.svg"
+                    id="noVNC_send_esc_button" class="noVNC_button"
+                    title="Send Escape">
+                <input type="image" alt="Ctrl+Alt+Del" src="app/images/ctrlaltdel.svg"
+                    id="noVNC_send_ctrl_alt_del_button" class="noVNC_button"
+                    title="Send Ctrl-Alt-Del">
+            </div>
             </div>
 
             <!-- Shutdown/Reboot -->
@@ -203,6 +193,15 @@
                     <li>
                         <div class="noVNC_expander">Advanced</div>
                         <div><ul>
+                            <li>
+                                <label for="noVNC_setting_quality">Quality:</label>
+                                <input id="noVNC_setting_quality" type="range" min="0" max="9" value="6">
+                            </li>
+                            <li>
+                                <label for="noVNC_setting_compression">Compression level:</label>
+                                <input id="noVNC_setting_compression" type="range" min="0" max="9" value="2">
+                            </li>
+                            <li><hr></li>
                             <li>
                                 <label for="noVNC_setting_repeaterID">Repeater ID:</label>
                                 <input id="noVNC_setting_repeaterID" type="text" value="">
@@ -285,14 +284,18 @@
 
     <!-- Password Dialog -->
     <div class="noVNC_center noVNC_connect_layer">
-    <div id="noVNC_password_dlg" class="noVNC_panel"><form>
+    <div id="noVNC_credentials_dlg" class="noVNC_panel"><form>
         <ul>
-            <li>
+            <li id="noVNC_username_block">
+                <label>Username:</label>
+                <input id="noVNC_username_input">
+            </li>
+            <li id="noVNC_password_block">
                 <label>Password:</label>
                 <input id="noVNC_password_input" type="password">
             </li>
             <li>
-                <input id="noVNC_password_button" type="submit" value="Send Password" class="noVNC_submit">
+                <input id="noVNC_credentials_button" type="submit" value="Send Credentials" class="noVNC_submit">
             </li>
         </ul>
     </form></div>
