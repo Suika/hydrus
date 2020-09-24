@@ -1,0 +1,31 @@
+--- a/utils.py
++++ b/utils.py
+@@ -757,7 +757,7 @@
+     :rtype: dict
+     """
+     if should_bypass_proxies(url, no_proxy=no_proxy):
+-        return {}
++        return {'__bypass_proxies': True}
+     else:
+         return getproxies()
+
+
+--- a/sessions.py
++++ b/sessions.py
+@@ -698,8 +698,15 @@
+                 verify = (os.environ.get('REQUESTS_CA_BUNDLE') or
+                           os.environ.get('CURL_CA_BUNDLE'))
+
++        if 'no' in self.proxies:
++            if should_bypass_proxies(url, no_proxy=self.proxies['no']):
++                proxies = {'__bypass_proxies': True}
++
+         # Merge all the kwargs.
+-        proxies = merge_setting(proxies, self.proxies)
++        if '__bypass_proxies' in proxies:
++            proxies = {} # bypass proxies for this request
++        else:
++            proxies = merge_setting(proxies, self.proxies)
+         stream = merge_setting(stream, self.stream)
+         verify = merge_setting(verify, self.verify)
+         cert = merge_setting(cert, self.cert)
