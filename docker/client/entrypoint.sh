@@ -13,10 +13,10 @@ if [ -f "/opt/hydrus/docker/client/patch.patch" ]; then
 fi
 
 if [ -f "/opt/hydrus/docker/client/requests.patch" ]; then
-  pushd /usr/lib/python3.7/site-packages/requests
+  cd /usr/lib/python3.7/site-packages/requests
     echo "Patching Requests"
     patch -f -p1 -i /opt/hydrus/docker/client/requests.patch
-  popd
+  cd /opt/hydrus/
 fi
 
 #if [ $USER_ID !=  0 ] && [ $GROUP_ID != 0 ]; then
