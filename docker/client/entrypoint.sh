@@ -15,7 +15,7 @@ fi
 if [ -f "/opt/hydrus/docker/client/requests.patch" ]; then
   cd /usr/lib/python3.7/site-packages/requests
     echo "Patching Requests"
-    patch -f -p1 -i /opt/hydrus/docker/client/requests.patch
+    patch -f -p2 -i /opt/hydrus/docker/client/requests.patch
   cd /opt/hydrus/
 fi
 
