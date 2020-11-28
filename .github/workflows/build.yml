@@ -17,12 +17,14 @@ jobs:
         name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
+        env: 
+          HY_V: v$(grep SOFTWARE_VERSION hydrus/core/HydrusConstants.py | cut -d " " -f 3)
         with:
           images: |
             suika/hydrus:latest
             ghcr.io/suika/hydrus:latest
-            suika/hydrus:v$(grep SOFTWARE_VERSION hydrus/core/HydrusConstants.py | cut -d " " -f 3)
-            ghcr.io/suika/hydrus:v$(grep SOFTWARE_VERSION hydrus/core/HydrusConstants.py | cut -d " " -f 3)
+            suika/hydrus:${{ env.HY_V }}
+            ghcr.io/suika/hydrus:${{ env.HY_V }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -57,7 +59,6 @@ jobs:
           labels: |
             ${{ steps.docker_meta.outputs.labels }}
             org.opencontainers.image.title=Hydrus Network
-            org.opencontainers.image.description=Cross-platform imageboard tag and file manager
             org.opencontainers.image.vendor=suika
       -
         name: Check manifest
