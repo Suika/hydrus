@@ -14,37 +14,63 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2.3.3
       -
-        name: Set up Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v3.3.1
+        name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
         with:
-          version: latest
+          images: |
+            suika/hydrus:latest
+            ghcr.io/suika/hydrus:latest
+            suika/hydrus:v$(grep SOFTWARE_VERSION hydrus/core/HydrusConstants.py | cut -d " " -f 3)
+            ghcr.io/suika/hydrus:v$(grep SOFTWARE_VERSION hydrus/core/HydrusConstants.py | cut -d " " -f 3)
       -
-        name: Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-      - 
-        name: Docker login
-        run: |
-          docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${DOCKER_REGISTRY_PASSWORD}"
-        env:
-          DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-          DOCKER_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
       -
-        name: Run Buildx
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          buildkitd-flags: "--debug"
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      -
+        name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      -
+        name: Build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          file: ./docker/client/Dockerfile
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
+          cache-from: type=registry,ref=ghcr.io/suika/hydrus:latest
+          labels: |
+            ${{ steps.docker_meta.outputs.labels }}
+            org.opencontainers.image.title=Hydrus Network
+            org.opencontainers.image.description=Cross-platform imageboard tag and file manager
+            org.opencontainers.image.vendor=suika
+      -
+        name: Check manifest
         run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
-            --cache-from suika/hydrus:latest \
-            --output "type=image,push=true" \
-            --tag suika/hydrus:latest \
-            --tag suika/hydrus:v$(grep SOFTWARE_VERSION hydrus/core/HydrusConstants.py | cut -d " " -f 3) \
-            --file ./docker/client/Dockerfile .
-      - 
-        name: Docker logout
+          docker buildx imagetools inspect suika/hydrus:latest
+          docker buildx imagetools inspect ghcr.io/suika/hydrus:latest
+      -
+        name: Inspect image
         run: |
-          docker logout
-        env:
-          DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          docker pull suika/hydrus:latest
+          docker image inspect suika/hydrus:latest
+          docker pull ghcr.io/suika/hydrus:latest
+          docker image inspect ghcr.io/suika/hydrus:latest
   build-server:
     runs-on: [ubuntu-latest]
     steps:
