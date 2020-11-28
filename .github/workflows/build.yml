@@ -84,6 +84,10 @@ jobs:
         name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: |
+            suika/hydrus
+            ghcr.io/suika/hydrus
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
