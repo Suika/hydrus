@@ -13,11 +13,20 @@ if [ -f "/opt/hydrus/docker/client/patch.patch" ]; then
 fi
 
 if [ -f "/opt/hydrus/docker/client/requests.patch" ]; then
-  cd /usr/lib/python3.7/site-packages/requests
+  cd /usr/lib/python3.8/site-packages/requests
     echo "Patching Requests"
     patch -f -p2 -i /opt/hydrus/docker/client/requests.patch
   cd /opt/hydrus/
 fi
+
+sed -i "/import RFB/a \
+  import WebAudio from '../core/webaudio.js';" \
+/opt/noVNC/app/ui.js
+
+sed -i "/connectFinished(e)/a \
+  var wa = new WebAudio('$NOVNC_AUDIO_ADDRESS'); \
+  document.getElementsByTagName('canvas')[0].addEventListener('keydown', e => { wa.start(); });" \
+/opt/noVNC/app/ui.js
 
 #if [ $USER_ID !=  0 ] && [ $GROUP_ID != 0 ]; then
 #  find /opt/hydrus/ -not -path "/opt/hydrus/db/*" -exec chown hydrus:hydrus "{}" \;

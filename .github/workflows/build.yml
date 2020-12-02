@@ -53,7 +53,7 @@ jobs:
           push: true
           file: ./docker/client/Dockerfile
           tags: suika/hydrus:latest,ghcr.io/suika/hydrus:latest,suika/hydrus:${{ env.SOFTWARE_VERSION }},ghcr.io/suika/hydrus:${{ env.SOFTWARE_VERSION }}
-          platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
+          platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/386,linux/arm/v7,linux/arm/v6
           cache-from: type=registry,ref=ghcr.io/suika/hydrus:latest
           labels: |
             ${{ steps.docker_meta.outputs.labels }}
@@ -76,7 +76,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v2
       - 
         name: Set env
         run: echo "SOFTWARE_VERSION=v$(grep SOFTWARE_VERSION hydrus/core/HydrusConstants.py | cut -d " " -f 3)" >> $GITHUB_ENV
@@ -118,7 +118,7 @@ jobs:
           push: true
           file: ./docker/server/Dockerfile
           tags: suika/hydrus:server,ghcr.io/suika/hydrus:server,suika/hydrus:server-${{ env.SOFTWARE_VERSION }},ghcr.io/suika/hydrus:server-${{ env.SOFTWARE_VERSION }}
-          platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
+          platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/386,linux/arm/v7,linux/arm/v6
           cache-from: type=registry,ref=ghcr.io/suika/hydrus:server
           labels: |
             ${{ steps.docker_meta.outputs.labels }}
