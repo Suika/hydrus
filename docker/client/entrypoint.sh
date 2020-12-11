@@ -19,15 +19,6 @@ if [ -f "/opt/hydrus/docker/client/requests.patch" ]; then
   cd /opt/hydrus/
 fi
 
-sed -i "/import RFB/a \
-  import WebAudio from '../core/webaudio.js';" \
-/opt/noVNC/app/ui.js
-
-sed -i "/connectFinished(e)/a \
-  var wa = new WebAudio('$NOVNC_AUDIO_ADDRESS'); \
-  document.getElementsByTagName('canvas')[0].addEventListener('keydown', e => { wa.start(); });" \
-/opt/noVNC/app/ui.js
-
 #if [ $USER_ID !=  0 ] && [ $GROUP_ID != 0 ]; then
 #  find /opt/hydrus/ -not -path "/opt/hydrus/db/*" -exec chown hydrus:hydrus "{}" \;
 #fi
