@@ -41,6 +41,10 @@ ENV QT_SCALE_FACTOR=1.1 \
     XVFBRES=1680x1050x24 \
     UID=${UID:-1000} \
     GID=${GID:-1000} \
-    DB_DIR=/opt/hydrus/db
+    DB_DIR=/opt/hydrus/db \
+    XVFB_EXTRA="" \
+    VNC_EXTRA="" \
+    NOVNC_EXTRA="" \
+    HYDRUS_EXTRA=""
 
 EXPOSE 5800 5900
