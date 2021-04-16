@@ -61,7 +61,7 @@ jobs:
           hdiutil create "$temp_dmg" -ov -volname "HydrusNetwork" -fs HFS+ -srcfolder "$GITHUB_WORKSPACE/build/$(head -n 1 triple.txt)/release"
           hdiutil convert "$temp_dmg" -format UDZO -o HydrusNetwork.dmg
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v2.2.1
+        uses: actions/upload-artifact@v2.2.3
         with:
           name: MacOS-DMG
           path: HydrusNetwork.dmg
