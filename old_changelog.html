@@ -35,6 +35,107 @@
             <h1 id="changelog"><a href="#changelog">changelog</a></h1>
             <ul>
                 <li>
+                    <h2 id="version_558"><a href="#version_558">version 558</a></h2>
+                    <ul>
+                        <li><h3>user contributions</h3></li>
+                        <li>thanks to a user, we now have rtf support! no word count yet, but it should be doable in future.</li>
+                        <li>thanks to a user, ctrl+p and ctrl+n now move the tag listbox selection up and down, in case the arrow keys aren't what you want. it also works on the tag autocomplete results from the text input</li>
+                        <li>added a link to 'Hydra Vista', https://github.com/konkrotte/hydravista, a macOS booru-like browser that talks to a hydrus client, to the main Client API help</li>
+                        <li><h3>misc</h3></li>
+                        <li>if you right-click on a selection of multiple tags, you can now hide them or their namespaces en masse</li>
+                        <li>if you right-click on a selection of multiple tags, you can now add or remove them from the favourites list en masse. if you select a mix of tags that are part-in, part-out of the list, you'll get both add and remove menu entries summarising what's going on. also, this command is now wrapped in a yes/no confirmation with full summary of what's being added/removed</li>
+                        <li>the 'favourites' "tag suggestions" section is renamed to 'most used'. this was often confused with the favourites that sit under a tag autocomplete, and these tags aren't really 'favourite' anyway, just most-used, so they are renamed</li>
+                        <li>if you have 'remove files from view when they are sent to the trash' set, then moving a file from one local file domain to another or removing one of multiple local file domains will no longer trigger a 'remove media'! sorry for the trouble, it was dumb logic on my part</li>
+                        <li>fixed the 'known urls' menu's url class section ('open all blahbooru urls' etc...) not appearing when right-clicking a single 'collection' thumbnail</li>
+                        <li>fixed the 'known urls' menu's open/copy specific urls not appearing when right-clicking any collection. it now shows the front 'display media's' urls</li>
+                        <li>if you change the darkmode in _options->colours_, the _help->darkmode_ menu item now updates correctly. just a side note: I hate much of this system and will eventually unify it with the style system</li>
+                        <li>fixed a bunch of 'number of x' tests at the database level when the operator is `≠`</li>
+                        <li><h3>system:number of urls</h3></li>
+                        <li>added `system:number of urls`! note this counts raw URLs at the moment--I just don't have fast database filtering of post urls vs file urls or url-classless urls or whatever. it does a raw count.</li>
+                        <li>`system:known urls` is now tucked with this new `system:number of urls` under a new stub predicate called `system:urls`</li>
+                        <li>a variety of 'system:number of words: has/no words' predicates now parse correctly when typed</li>
+                        <li>wrote some new system predicate parsing tests</li>
+                        <li><h3>more cbz rules</h3></li>
+                        <li>cbzs' non-image files must now have an appropriate extension like .txt, .nfo, or .xml</li>
+                        <li>the test regarding the count of non-image files (typically allowing up to 5 non-image files per directory) is more precise with regards to subdirectories, meaning a cbz with a single subdirectory and three non-image files now counts as a cbz</li>
+                        <li>every cbz must now have at least two image files that contain a number of some sort</li>
+                        <li><h3>cleanup and boring stuff</h3></li>
+                        <li>I split the github workflow build file into three, so the windows, linux, and macOS builds now all happen and upload in parallel. previously, the upload step was blocked on the slowest of the three, which was typically the macOS build by about ten minutes; now they all upload whenever they are ready. this will also help some future testing situations. the newly split scripts are a little unclean/inefficient, so there is also more work to do here</li>
+                        <li>I think I fixed the non-Windows executable permission bits for the various .sh and .command files in the base directory, which were lacking them, and I removed it from a couple dozen pngs across the docs and static directories, which somehow had them. let me know if I missed anything or messed anything up!</li>
+                        <li>if you click one of the static system predicate buttons that appear in the system pred edit UI, for instance 'system:has duration', this no longer gets promoted to the 'recent' predicates list the next time you open the panel</li>
+                        <li>some sytem predicate edit panels should stretch vertically a bit better</li>
+                        <li>some 'number of tags' queries should be a little faster</li>
+                        <li>the 'tag suggestions' options page has a bit of brushed up UI and some new explanation labels</li>
+                        <li>unified the various thumbnail generation error reporting for all the different filetypes. it should also print the file's hash, too, since most of these error contexts only have a temporary path to talk about at this stage, which isn't useful after the fact</li>
+                    </ul>
+                </li>
+                <li>
+                    <h2 id="version_557"><a href="#version_557">version 557</a></h2>
+                    <ul>
+                        <li><h3>misc</h3></li>
+                        <li>optimised large tag filter edit UI. you can now paste 5,000 items into an empty tag filter blacklist in less than a second, and if you have a big tag filter, removing or adding one thing is now instant (previously, this stuff would lag 4 seconds or more, sometimes multiple minutes!!)</li>
+                        <li>the ugoira 'num frames' counting method now discludes files ending in .js/.json, to catch future bundling of frame timings</li>
+                        <li>the cbz scanning tech should now recognise cbzs with four or fewer pages</li>
+                        <li>a legacy 'is this image all good?' check that happens on PIL-loading is now gone. this improves rendering for a variety of truncated files and clarifies some error messages (previously, this thing was just failing silently)</li>
+                        <li>fixed the delete file pre-flight logic so users on the non-advanced delete dialog can now delete repository updates. previously, they saw the menu entry, but hitting it was a no-op</li>
+                        <li><h3>better hash predicate parsing</h3></li>
+                        <li>`system:hash` labels are a little different now. they'll say `system:hash (md5) is abcd...`, with the algorithm after the "hash". hash is omitted for sha256 (the hydrus default). this eases parsing</li>
+                        <li>`system:similar to data` labels are a little different. they'll say 'distance' instead of 'max hamming', and the number and type of hashes they hold, and if they hold only pixel hashes, the distance is not stated</li>
+                        <li>`system:hash` predicate parsing is now more flexible. you can put the hash type pretty much anywhere now.</li>
+                        <li>`system:similar to` and `system:similar to data` predicate parsing is now more flexible. more combinations are allowed, and you can not include distance and it'll be fine</li>
+                        <li>these three hash predicates now copy to clipboard with all their hashes explicitly enumerated, making strings that are fully parsable! this is a big step forward in a completely sealed import-export predicate parsing loop; now I have the tech set up to export a different phrase to clipboard than what you see in the label, I just need the examples of where it goes wrong. if there is a system predicate that copies to clipboard in a way that won't parse back, let me know and I'll see if I can fix it.</li>
+                        <li>added more unit tests for this parsing</li>
+                        <li><h3>documentation and cleanup</h3></li>
+                        <li>wrote a guide on how to install 'Git for Windows' for the 'running from source' help. although most of the settings in its marathon 12-page install wizard can be left as default, the technical questions can be intimidating, so I've written them all out for a nice simple install. also brushed up some of the surrounding help here</li>
+                        <li>added a warning to the regular 'installing and updating' help regarding the danger of test-running extract releases before updating (you can overwrite your database by accident)</li>
+                        <li>thanks to a user, the filetypes help document is updated with Ugoira and CBZ info</li>
+                        <li>all the 'HydrusFiletypeHandling' files are refactored to a new 'files' module. there's a bunch of them these days!</li>
+                        <li>the hydrus.core.images module is moved beneath this 'files' module too</li>
+                        <li>the file log list panel right-click menu now says 'open URLs'/'open files' locations' depending on whether you are looking at a URL import log or local HDD import log</li>
+                        <li><h3>client api</h3></li>
+                        <li>the `file_metadata` call now returns `filetype_forced` and, if so, also `original_mime` to talk about the new forced filetype system</li>
+                        <li>the client api help and unit tests are updated to test this is working ok</li>
+                        <li>fixed a typo that was causing too much work in the updated file info manager call (and was often returning 'null' results for half-cached `file_metadata` requests with `only_return_basic_information=true`)</li>
+                        <li>thanks to a user, the `/add_urls/get_url_info` Client API call now has a cache timeout of ten minutes, and the `/add_urls/get_url_files` call now has a timeout of 30 seconds if all the files are 'already in db'. this should automatically reduce some overhead for several programs that talk to the Client API a lot about URLs</li>
+                        <li>the client api version is now 58</li>
+                    </ul>
+                </li>
+                <li>
+                    <h2 id="version_556"><a href="#version_556">version 556</a></h2>
+                    <ul>
+                        <li><h3>misc</h3></li>
+                        <li>fixed, on a file drag and drop, the new export path eliding code from raising an error when the default export phrase would give an empty filename. e.g. if you set the export phrase as `[title]` and the file has no title. this no longer raises an error, and the fallback export phrase `{hash}` is again used instead. broadly speaking, most errors here are now handled better</li>
+                        <li>also, export folders will now fallback to using `{hash}` if their normal export filename raises an error</li>
+                        <li>holding down ctrl+shift+ while selecting thumbnails now does the same thing as a bare shift+ select. previously, it was unhelpfully interpreting this as a bare ctrl+ click</li>
+                        <li>I may have improved the stability of 'minimise to system tray'. this thing still hangs the UI for some users on a delayed restore, I do not for certain know why</li>
+                        <li>thanks to a user who figured out the new build script, the Docker package is now on Alpine 3.19, with more and newer python library support along with it</li>
+                        <li><h3>forced filetypes</h3></li>
+                        <li>you can now force files' filetypes. hit _right-click->manage->force filetype_ on thumbnails or the media viewer, and you'll get a new dialog that lets you force-reassign those files to be considered something else. changes take place immediately, and files are renamed on disk with their new file extensions, making 'open externally' work nicely. the original filetype is remembered, so this can be undone easily through the same dialog</li>
+                        <li>this is happening because of the cbz/zip/Ugoira work, where the distinction between one format and another is not always perfect. the tech will also be useful for 'arbitrary file import' support. in any case, if there is something you want to force one way or another, it should now be easy</li>
+                        <li>searching for system:filetype will recognise the forced filetypes, but there may be other, more advanced areas of the program that should but do not. please let me know how you get on!</li>
+                        <li>there is a new system predicate, `system:has/no forced filetype`, that lets you further filter for the files that have this set or not. it is under `system:file properties`. it is also parsable if you ever need to type it</li>
+                        <li>if a file gets a metadata rescan and becomes a different filetype, this affects the original filetype and not the forced. if they are now both the same, no big problem</li>
+                        <li>as a side thing, I cleaned up how file metadata is put together in the database during file search. we were in a limbo state a little while ago, with an api call that just needed limited data, but I was never comfortable with it. now everything goes through the same routine, and every 'file info manager' is fully fleshed out, no matter the caller</li>
+                        <li>_yes, if you set a zip as a jpeg, you are going to get weird errors when you click on them. I'll iron these things out a bit--and have already added several quick safety checks for apparent image files without resolution and so on--and I am interested in reports, but for the most part, don't be stupid here and you won't end up in a bad place_</li>
+                        <li><h3>filetypes</h3></li>
+                        <li>**you will be asked on update if you would like to regenerate all your animated GIF and APNG thumbnails. The new x%-in and transparency tech seems to be working well, so I'm rolling out the full regen to everyone**</li>
+                        <li>before verifying a zip is an Ugoira or a cbz, the client now test-reads the cover page it will use as a thumbnail just to make sure it isn't passworded or corrupt or whatever</li>
+                        <li>thanks to a user, the test for whether a a zip is encrypted is much faster and neater now</li>
+                        <li>if there is an obvious video in a zip file, this is now dispositive to it not being considered a cbz</li>
+                        <li>all cbz and Ugoira are going to get a metadata scan again to account for these stricter rules</li>
+                        <li><h3>Mr. Bones/file history chart</h3></li>
+                        <li>**if you have had some dodgy inbox/archive numbers in your file history chart, please check again and let me know what you see. if the numbers are still bad, try changing the search from the 'all my files'/'system:everything' default--any better?**</li>
+                        <li>fixed Mr. Bones undercounting deleted files on some very old clients (i.e. mine)</li>
+                        <li>improved accuracy of some archive/inbox time calculations for the file history chart by adjusting archive times to the file service removal time of that file, if it is earlier</li>
+                        <li>included some additional de-inbox events that were being missed in the file history chart by recognising that files in the inbox but removed from a domain are nonetheless a decrement to the inbox count</li>
+                        <li>on update, some old invalid archive records will be deleted, which will also help the file history chart</li>
+                        <li><h3>boot error handling</h3></li>
+                        <li>if you start the program with client.db/server.db but missing any of the auxiliary databases, the program now stops you before the new file creation starts with a blocking message saying what has happened. it advises whether you should quit the process now to diagnose the hard drive fault or attempt to continue with reconstruction</li>
+                        <li>if you start the program with client.db/server.db but the 'version' table is missing, you now get a special blocking message before the main db creation routine starts saying what has happened. it advises whether you should quit the process now to diagnose the hard drive fault or attempt to continue with initial creation</li>
+                        <li>the server gets a bit of 'safe blocking show message' tech this week, which prints this info to the console and asks for the user to hit enter to continue</li>
+                    </ul>
+                </li>
+                <li>
                     <h2 id="version_555"><a href="#version_555">version 555</a></h2>
                     <ul>
                         <li><h3>Ugoira/CBZ/Zip</h3></li>
@@ -395,7 +496,7 @@
                         <li>moved the new blurhash methods to a new `HydrusBlurhash` file</li>
                         <li>moved various normalisation routines to a new `HydrusImageNormalisation` file</li>
                         <li>moved various channel scanning and adjusting code to a new `HydrusImageColours` file</li>
-                        <li>moved the hydrus image files to the new 'hydrus.core.images' module</li>
+                        <li>moved the hydrus image files to the new 'hydrus.core.files.images' module</li>
                         <li>cleaned up some image loading code</li>
                         <li>deleted ancient and no-longer-used client db code regarding imageboard definitions, status texts, and more</li>
                         <li>removed the ancient `OPENCV_OK` fallback code, which was only used, superfluously, in a couple of final places. OpenCV is not optional to run hydrus, server or client</li>
