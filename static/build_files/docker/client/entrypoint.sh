@@ -3,10 +3,6 @@
 USER_ID=${UID:-1000}
 GROUP_ID=${GID:-1000}
 
-PYTHON_MAJOR_VERSION=$(python3 -c "import sys; print(sys.version_info.major)")
-PYTHON_MINOR_VERSION=$(python3 -c "import sys; print(sys.version_info.minor)")
-
-#apk add xterm
 echo "Executing entrypoint as: $(id)"
 groupmod --gid "$GROUP_ID" hydrus
 usermod --uid "$USER_ID" --gid "$GROUP_ID" hydrus
@@ -17,7 +13,12 @@ if [ $USER_ID !=  1000 ] && [ $GROUP_ID != 1000 ]; then
   find /opt/hydrus/ -path "/opt/hydrus/db/*" -prune -o -exec chown hydrus:hydrus "{}" \;
   echo "Modifying /opt/noVNC permissions for consistency"
   find /opt/noVNC/ -exec chown hydrus:hydrus "{}" \;
+  echo "Modifying /opt/venv permissions for consistency"
+  find /opt/venv/ -exec chown hydrus:hydrus "{}" \;
 fi
+
+PYTHON_MAJOR_VERSION=$(/opt/venv/bin/python3 -c "import sys; print(sys.version_info.major)")
+PYTHON_MINOR_VERSION=$(/opt/venv/bin/python3 -c "import sys; print(sys.version_info.minor)")
 
 cd /opt/hydrus/
 
@@ -32,21 +33,21 @@ if [ "$PYTHON_MAJOR_VERSION" == "3" ]; then
     PATCH_FILE="/opt/hydrus/static/build_files/docker/client/requests.patch"
     if [ -f "$PATCH_FILE" ]; then
       echo "Find and apply requests noproxy patch for py 3.10 and below"
-      cd $(python3 -c "import sys; import requests; print(requests.__path__[0])")
+      cd $(/opt/venv/bin/python3 -c "import sys; import requests; print(requests.__path__[0])")
       patch -f -p2 -i "$PATCH_FILE"
     fi
   elif [ "$PYTHON_MINOR_VERSION" -eq 11 ]; then
     PATCH_FILE="/opt/hydrus/static/build_files/docker/client/requests.311.patch"
     if [ -f "$PATCH_FILE" ]; then
       echo "Find and apply requests noproxy patch for py 3.11"
-      cd $(python3 -c "import sys; import requests; print(requests.__path__[0])")
+      cd $(/opt/venv/bin/python3 -c "import sys; import requests; print(requests.__path__[0])")
       patch -f -i "$PATCH_FILE"
     fi
   elif [ "$PYTHON_MINOR_VERSION" -eq 12 ]; then
     PATCH_FILE="/opt/hydrus/static/build_files/docker/client/requests.311.patch"
     if [ -f "$PATCH_FILE" ]; then
       echo "Find and apply requests noproxy patch for py 3.12"
-      cd $(python3 -c "import sys; import requests; print(requests.__path__[0])")
+      cd $(/opt/venv/bin/python3 -c "import sys; import requests; print(requests.__path__[0])")
       patch -f -i "$PATCH_FILE"
     fi
   else
