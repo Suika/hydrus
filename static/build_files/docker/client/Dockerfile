@@ -13,7 +13,7 @@ RUN apk --no-cache add fvwm tigervnc xvfb supervisor opencv mpv mpv-libs ffmpeg 
  py3-psutil py3-pysocks py3-requests py3-twisted py3-yaml py3-lz4 py3-html5lib py3-dateutil py3-qtpy py3-mpv py3-service_identity py3-parsing py3-olefile
 
 RUN python3 -m venv /opt/venv
-RUN /opt/venv/bin/pip install cloudscraper dateparser Pympler pillow-avif-plugin pillow-heif pillow-jxl-plugin
+RUN /opt/venv/bin/pip install dateparser Pympler pillow-avif-plugin pillow-heif pillow-jxl-plugin
 
 RUN set -xe \
     && mkdir -p /opt/hydrus \
