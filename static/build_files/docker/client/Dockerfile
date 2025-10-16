@@ -13,7 +13,7 @@ RUN apk --no-cache add fvwm tigervnc xvfb supervisor opencv mpv mpv-libs ffmpeg 
  py3-psutil py3-pysocks py3-requests py3-twisted py3-yaml py3-lz4 py3-html5lib py3-dateutil py3-qtpy py3-mpv py3-service_identity py3-parsing py3-olefile \
  build-base libavif-dev libheif-dev libjxl-dev python3-dev freetype-dev fribidi-dev lcms2-dev libimagequant-dev libjpeg-turbo-dev libpng-dev libwebp-dev libxcb-dev openjpeg-dev py3-gpep517 py3-setuptools py3-wheel python3-dev tiff-dev zlib-dev
 
-RUN python3 -m venv /opt/venv
+RUN python3 -m venv /opt/venv --system-site-packages
 RUN /opt/venv/bin/pip install dateparser Pympler pillow-avif-plugin pillow-heif pillow-jxl-plugin
 
 RUN set -xe \
