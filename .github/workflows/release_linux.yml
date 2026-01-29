@@ -43,6 +43,10 @@ jobs:
           cp hydrus/static/build_files/linux/hydrus.spec hydrus.spec
           pyinstaller hydrus.spec
       -
+        name: Remove Surplus File
+        run: |
+          rm -f dist/hydrus_client/libxkbcommon.so*
+      -
         name: Set Permissions
         run: |
           sudo find dist -type d -exec chmod 0755 {} \;
