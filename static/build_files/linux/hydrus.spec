@@ -2,6 +2,8 @@
 
 block_cipher = None
 
+system_libraries_exclusion = ['libxkbcommon*']
+
 client_a = Analysis(['hydrus/hydrus_client.py'],
              pathex=['.'],
              binaries=[],
@@ -30,6 +32,9 @@ server_a = Analysis(['hydrus/hydrus_server.py'],
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
+
+client_a.exclude_system_libraries(list_of_exceptions=system_libraries_exclusion)
+server_a.exclude_system_libraries(list_of_exceptions=system_libraries_exclusion)
 
 client_pyz = PYZ(client_a.pure, client_a.zipped_data, cipher=block_cipher)
 server_pyz = PYZ(server_a.pure, server_a.zipped_data, cipher=block_cipher)
