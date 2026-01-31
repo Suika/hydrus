@@ -77,8 +77,16 @@ elif RUNNING_FROM_FROZEN_BUILD:
 elif RUNNING_FROM_MACOS_APP:
     NICE_RUNNING_AS_STRING = 'from App'
 
-BIN_DIR = os.path.join( BASE_DIR, 'bin' )
-HELP_DIR = os.path.join( BASE_DIR, 'help' )
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    BIN_DIR = os.path.join( BASE_DIR, 'lib', 'bin' )
+    HELP_DIR = os.path.join( BASE_DIR, 'lib', 'help' )
+    INCLUDE_DIR = os.path.join( BASE_DIR, 'lib', 'include' )
+    LICENSE_PATH = os.path.join( BASE_DIR, 'lib', 'license.txt' )
+else:
+    BIN_DIR = os.path.join( BASE_DIR, 'bin' )
+    HELP_DIR = os.path.join( BASE_DIR, 'help' )
+    INCLUDE_DIR = os.path.join( BASE_DIR, 'include' )
+    LICENSE_PATH = os.path.join( BASE_DIR, 'license.txt' )
 
 DEFAULT_DB_DIR = os.path.join( BASE_DIR, 'db' )
 
@@ -101,8 +109,6 @@ if USERPATH_DB_DIR == desired_userpath_db_dir:
     
 
 WE_SWITCHED_TO_USERPATH = False
-
-LICENSE_PATH = os.path.join( BASE_DIR, 'license.txt' )
 
 #
 

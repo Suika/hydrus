@@ -3,7 +3,7 @@ import os
 from hydrus.core import HydrusConstants as HC
 from hydrus.core import HydrusGlobals as HG
 
-INSTALL_STATIC_DIR = os.path.join( HC.BASE_DIR, 'static' )
+INSTALL_STATIC_DIR = os.path.join( HC.BASE_DIR, 'lib', 'static' )
 
 USE_USER_STATIC_DIR = True
 
