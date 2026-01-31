@@ -37,6 +37,9 @@ server_a = Analysis(['hydrus\\hydrus_server.py'],
              cipher=block_cipher,
              noarchive=False)
 
+client_a.exclude_system_libraries()
+server_a.exclude_system_libraries()
+
 client_pyz = PYZ(client_a.pure, client_a.zipped_data, cipher=block_cipher)
 server_pyz = PYZ(server_a.pure, server_a.zipped_data, cipher=block_cipher)
 
