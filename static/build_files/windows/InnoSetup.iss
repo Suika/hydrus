@@ -15,10 +15,10 @@ Name: {group}\uninstall hydrus network; Filename: {uninstallexe}; WorkingDir: {a
 Name: {userdesktop}\hydrus client; Filename: {app}\hydrus_client.exe; WorkingDir: {app}; Tasks: desktopicons
 Name: {userdesktop}\hydrus server; Filename: {app}\hydrus_server.exe; WorkingDir: {app}; Tasks: desktopicons
 [Setup]
-InternalCompressLevel=ultra64
+InternalCompressLevel=normal
 OutputDir=.
 OutputBaseFilename=Hydrus.Network.{#VersionShort}.-.Windows.-.Installer
-Compression=lzma/ultra64
+Compression=lzma/max
 AppName=Hydrus Network
 AppVerName=Hydrus Network
 AppPublisher=Hydrus Network
