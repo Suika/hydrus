@@ -21,13 +21,16 @@ RUN set -xe \
     && addgroup -g 1000 hydrus \
     && adduser -h /opt/hydrus -u 1000 -H -S -G hydrus hydrus
 
-COPY --chown=hydrus . /opt/hydrus
+COPY noVNC-1.6.0.tar.gz websockify-0.13.0.tar.gz /tmp/
 
 RUN mkdir -p /opt/noVNC/utils/websockify \
- && tar xzf /opt/hydrus/static/build_files/docker/client/noVNC-1.6.0.tar.gz --strip-components=1 -C /opt/noVNC \
- && tar xzf /opt/hydrus/static/build_files/docker/client/websockify-0.13.0.tar.gz --strip-components=1 -C /opt/noVNC/utils/websockify \
+ && tar xzf /tmp/noVNC-1.6.0.tar.gz --strip-components=1 -C /opt/noVNC \
+ && tar xzf /tmp/websockify-0.13.0.tar.gz --strip-components=1 -C /opt/noVNC/utils/websockify \
  && sed -i -- "s/ps -p/ps -o pid | grep/g" /opt/noVNC/utils/novnc_proxy \
+ && rm /tmp/noVNC-1.6.0.tar.gz /tmp/websockify-0.13.0.tar.gz \
  && chown hydrus:hydrus -R /opt/noVNC
+
+COPY --chown=hydrus . /opt/hydrus
 
 RUN mv /opt/hydrus/static/build_files/docker/client/supervisord.conf /etc/supervisord.conf && \
     cp /opt/noVNC/vnc.html /opt/noVNC/index.html
