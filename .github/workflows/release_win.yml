@@ -27,7 +27,7 @@ jobs:
           architecture: x64
       -
         name: Pip Install
-        run: python3 -m pip install .\hydrus[dev]
+        run: python3 -m pip install .\hydrus[dev,qt6-new,mpv-new,opencv-new,other-future]
       - 
         name: Build docs to /help
         run: mkdocs build -d help
