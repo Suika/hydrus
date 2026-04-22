@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/favicon.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -5311,17 +5311,17 @@
 <ul>
 <li>
 <p>Your list of tags:</p>
-<div class="highlight"><pre><span></span><code>[ &#39;character:samus aran&#39;, &#39;creator:青い桜&#39;, &#39;system:height &gt; 2000&#39; ]
+<div class="highlight"><pre><span></span><code>[ &#39;character:space bounty hunter&#39;, &#39;creator:青い桜&#39;, &#39;system:height &gt; 2000&#39; ]
 </code></pre></div>
 </li>
 <li>
 <p>JSON-encoded:</p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="s2">&quot;character:samus aran&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;creator:\\u9752\\u3044\\u685c&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;system:height &gt; 2000&quot;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="s2">&quot;character:space bounty hunter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;creator:\\u9752\\u3044\\u685c&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;system:height &gt; 2000&quot;</span><span class="p">]</span>
 </code></pre></div>
 </li>
 <li>
 <p>Then URL-encoded:</p>
-<div class="highlight"><pre><span></span><code>%5B%22character%3Asamus%20aran%22%2C%20%22creator%3A%5Cu9752%5Cu3044%5Cu685c%22%2C%20%22system%3Aheight%20%3E%202000%22%5D
+<div class="highlight"><pre><span></span><code>%5B%22character%3Aspace%20bounty%20hunter%22%2C%20%22creator%3A%5Cu9752%5Cu3044%5Cu685c%22%2C%20%22system%3Aheight%20%3E%202000%22%5D
 </code></pre></div>
 </li>
 <li>
@@ -5331,7 +5331,7 @@
 </li>
 <li>
 <p>Full URL path example:</p>
-<div class="highlight"><pre><span></span><code>/get_files/search_files?file_sort_type=6&amp;file_sort_asc=false&amp;tags=%5B%22character%3Asamus%20aran%22%2C%20%22creator%3A%5Cu9752%5Cu3044%5Cu685c%22%2C%20%22system%3Aheight%20%3E%202000%22%5D
+<div class="highlight"><pre><span></span><code>/get_files/search_files?file_sort_type=6&amp;file_sort_asc=false&amp;tags=%5B%22character%3Aspace%20bounty%20hunter%22%2C%20%22creator%3A%5Cu9752%5Cu3044%5Cu685c%22%2C%20%22system%3Aheight%20%3E%202000%22%5D
 </code></pre></div>
 </li>
 </ul>
@@ -5431,135 +5431,151 @@ Accept: application/json
 <p>Also, note that all users can now copy their service keys from <em>review services</em>.</p>
 <h2 id="services_object">The Services Object<a class="headerlink" href="#services_object" title="Permanent link">&para;</a></h2>
 <p>Hydrus manages its different available domains and actions with what it calls <em>services</em>. If you are a regular user of the program, you will know about <em>review services</em> and <em>manage services</em>. The Client API needs to refer to services, either to accept commands from you or to tell you what metadata files have and where.</p>
-<p>When it does this, it gives you this structure, typically under a <code>services</code> key right off the root node:</p>
-<div class="highlight"><span class="filename">Services Object</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;c6f63616c2074616773&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<p>When the client tells you about the available services, it gives you the following structure, typically under a <code>services_v2</code> key right off the root node.</p>
+<div class="highlight"><span class="filename">Services Object (actually a List)</span><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my tags&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c6f63616c2074616773&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local tag domain&quot;</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;5674450950748cfb28778b511024cfbf0f9f67355cf833de632244078b5a6f8d&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example tag repo&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5674450950748cfb28778b511024cfbf0f9f67355cf833de632244078b5a6f8d&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hydrus tag repository&quot;</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;6c6f63616c2066696c6573&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my files&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6c6f63616c2066696c6573&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local file domain&quot;</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;7265706f7369746f72792075706461746573&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;repository updates&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;7265706f7369746f72792075706461746573&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local update file domain&quot;</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;ae7d9a603008919612894fc360130ae3d9925b8577d075cd0473090ac38b12b6&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example file repo&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ae7d9a603008919612894fc360130ae3d9925b8577d075cd0473090ac38b12b6&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hydrus file repository&quot;</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;616c6c206c6f63616c2066696c6573&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hydrus local file storage&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;616c6c206c6f63616c2066696c6573&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;virtual combined local file domain&quot;</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;616c6c206c6f63616c206d65646961&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;combined local file domains&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;616c6c206c6f63616c206d65646961&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">21</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;virtual combined local media domain&quot;</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;616c6c206b6e6f776e2066696c6573&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all known files&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;616c6c206b6e6f776e2066696c6573&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;virtual combined file domain&quot;</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;616c6c206b6e6f776e2074616773&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all known tags&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;616c6c206b6e6f776e2074616773&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;virtual combined tag domain&quot;</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;74d52c6238d25f846d579174c11856b1aaccdb04a185cb2c79f0d0e499284f2c&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example local rating like service&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;74d52c6238d25f846d579174c11856b1aaccdb04a185cb2c79f0d0e499284f2c&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local like/dislike rating service&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;star_shape&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;svg&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;show_in_thumbnail&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;show_in_thumbnail_even_when_null&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;colours&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;dislike&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;like&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#50C878&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;mixed&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#5F5F5F&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;null&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#BFBFBF&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="nt">&quot;dislike&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;like&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#50C878&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;mixed&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#5F5F5F&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;null&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#BFBFBF&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;90769255dae5c205c975fc4ce2efff796b8be8a421f786c1737f87f98187ffaf&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example local rating numerical service&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local numerical rating service&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;star_shape&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fat star&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;allows_zero&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;min_stars&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;max_stars&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;show_in_thumbnail&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;show_in_thumbnail_even_when_null&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example local rating numerical service&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;90769255dae5c205c975fc4ce2efff796b8be8a421f786c1737f87f98187ffaf&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local numerical rating service&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;star_shape&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fat star&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;allows_zero&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;min_stars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;max_stars&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;show_in_thumbnail&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;show_in_thumbnail_even_when_null&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;colours&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;dislike&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;like&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#50C878&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;mixed&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#5F5F5F&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;null&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#BFBFBF&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="nt">&quot;dislike&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;like&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#50C878&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;mixed&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#5F5F5F&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;null&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#BFBFBF&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;b474e0cbbab02ca1479c12ad985f1c680ea909a54eb028e3ad06750ea40d4106&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example local rating inc/dec service&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local inc/dec rating service&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;show_in_thumbnail&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;show_in_thumbnail_even_when_null&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example local rating inc/dec service&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;b474e0cbbab02ca1479c12ad985f1c680ea909a54eb028e3ad06750ea40d4106&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local inc/dec rating service&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;show_in_thumbnail&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;show_in_thumbnail_even_when_null&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;colours&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;like&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#50C878&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;mixed&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#5F5F5F&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
-<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="nt">&quot;like&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#50C878&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;mixed&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#5F5F5F&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;7472617368&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;trash&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;7472617368&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;type_pretty&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local trash file domain&quot;</span>
 <span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
+<span class="p">]</span>
 </code></pre></div>
-<p>I hope you recognise some of the information here. But what's that hex key on each section? It is the <code>service_key</code>.</p>
+<p>You will likely see an older, uglier format, under a <code>services</code> key--you can ignore this.</p>
 <p>All services have these properties:</p>
 <ul>
 <li><code>name</code> - A mutable human-friendly name like 'my tags'. You can use this to present the service to the user--they should recognise it.</li>
 <li><code>type</code> - An integer enum saying whether the service is a local tag domain or like/dislike rating or whatever. This cannot change.</li>
-<li><code>service_key</code> - The true 'id' of the service. It is a string of hex, sometimes just twenty or so characters but in many cases 64 characters. This cannot change, and it is how we will refer to different services.</li>
+<li><code>service_key</code> - The true 'id' of the service. It is a string of hex, sometimes just twenty or so characters but in many cases sixty-four characters. This cannot change, and it is how we will refer to different services.</li>
 </ul>
 <p>This <code>service_key</code> is important. A user can rename their services, so <code>name</code> is not an excellent identifier, and definitely not something you should save to any permanent config file.</p>
 <p>If we want to search some files on a particular file and tag domain, we should expect to be saying something like <code>file_service_key=6c6f63616c2066696c6573</code> and <code>tag_service_key=f032e94a38bb9867521a05dc7b189941a9c65c25048911f936fc639be2064a4b</code> somewhere in the request.</p>
@@ -5594,7 +5610,7 @@ Accept: application/json
 <li>Numerical services have <code>min_stars</code> (0 or 1) and <code>max_stars</code> (1 to 20). <code>allows_zero</code> lines up with <code>min_stars</code> and is for your convenience.</li>
 </ul>
 <p>If you are displaying ratings, don't feel crazy obligated to obey the shape! Show a &#8536;, select from a dropdown list, do whatever you like!</p>
-<p>If you want to know the services in a client, hit up <a href="#get_services">/get_services</a>, which simply gives the above. The same structure has recently been added to <a href="#get_files_file_metadata">/get_files/file_metadata</a> for convenience, since that refers to many different services when it is talking about file locations and ratings and so on.</p>
+<p>If you want to know the services in a client, hit up <a href="#get_services">/get_services</a>, which simply gives the above. The same structure appears in a few other calls for convenience, like <a href="#get_files_file_metadata">/get_files/file_metadata</a>, since that refers to many different services when it is talking about file locations and ratings and so on.</p>
 <p>Note: If you need to do some quick testing, you should be able to copy the <code>service_key</code> of any service by hitting the 'copy service key' button in <em>review services</em>.</p>
 <h2 id="CDPP">Current Deleted Pending Petitioned<a class="headerlink" href="#CDPP" title="Permanent link">&para;</a></h2>
 <p>The content storage and update pipeline systems in hydrus consider content (e.g. 'on file service x, file y exists', 'on tag service x, file y has tag z', or 'on rating service x, file y has rating z') as existing within a blend of four states:</p>
@@ -5867,7 +5883,7 @@ Accept: application/json
 <p>This now primarily uses <a href="#services_object">The Services Object</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you do the request and look at the actual response, you will see a lot more data under different keys--this is deprecated, and will be deleted in 2024. If you use the old structure, please move over!</p>
+<p>If you do the request and look at the actual response, you will see a lot more data under different keys. This call has evolved a bunch over the years, and I never had the heart to properly deprecate and delete things (it would break an old script).</p>
 </div>
 <h3 id="get_service_rating_svg"><strong>GET <code>/get_service_rating_svg</code></strong><a class="headerlink" href="#get_service_rating_svg" title="Permanent link">&para;</a></h3>
 <p><em>Ask the client for the SVG star shape for a ratings service. Use this when a rating service in <a href="#services_object">The Services Object</a> has a <code>star_shape</code> of <code>svg</code>.</em></p>
@@ -6203,7 +6219,7 @@ Accept: application/json
 <span class="p">}</span>
 </code></pre></div></dd>
 </dl>
-<p>The <code>url_file_statuses</code> is a list of zero-to-n JSON Objects, each representing a file match the client found in its database for the URL. Typically, it will be of length 0 (for as-yet-unvisited URLs or Gallery/Watchable URLs that are not attached to files) or 1, but sometimes multiple files are given the same URL (sometimes by mistaken misattribution, sometimes by design, such as pixiv manga pages). Handling n files per URL is a pain but an unavoidable issue you should account for.</p>
+<p>The <code>url_file_statuses</code> is a list of zero-to-n JSON Objects, each representing a file match the client found in its database for the URL. Typically, it will be of length 0 (for as-yet-unvisited URLs or Gallery/Watchable URLs that are not attached to files) or 1, but sometimes multiple files are given the same URL (sometimes by mistaken misattribution, sometimes by design, such as a mini-manga Post URL that hosts 4 files). Handling n files per URL is a pain but an unavoidable issue you should account for.</p>
 <p><code>status</code> mas the same mapping as for <code>/add_files/add_file</code>, but the possible results are different:</p>
 <ul>
 <li>0 - File not in database, ready for import (you will only see this very rarely--usually in this case you will just get no matches)</li>
@@ -6238,7 +6254,7 @@ Accept: application/json
 <span class="w">  </span><span class="nt">&quot;normalised_url&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://someimageboard.org/cool/thread/123456&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;url_type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;url_type_string&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;watchable url&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;match_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8chan thread&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;match_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Some Imageboard thread&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;can_parse&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">}</span>
 </code></pre></div></p>
@@ -6298,7 +6314,7 @@ Accept: application/json
 <span class="w">  </span><span class="nt">&quot;filterable_tags&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="s2">&quot;1girl&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;artist name&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;creator:azto dio&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;creator:some guy&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;blonde hair&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;blue eyes&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;breasts&quot;</span><span class="p">,</span>
@@ -6316,12 +6332,12 @@ Accept: application/json
 <span class="w">    </span><span class="s2">&quot;long hair&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;long sleeves&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;looking at viewer&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;series:metroid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;series:bountyvania&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;mole&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;mole under mouth&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;patreon username&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;ponytail&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;character:samus aran&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;character:space bounty hunter&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;solo&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;standing&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;suit&quot;</span><span class="p">,</span>
@@ -6389,14 +6405,14 @@ Accept: application/json
 </ul>
 </dd>
 <dt>Example request:</dt>
-<dd>Given tags <code class="highlight"><span class="p">[</span><span class="w"> </span><span class="s2">&quot; bikini &quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blue    eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; character : samus aran &quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; :)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;   &quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;10&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;11&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;system:wew&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-flower&quot;</span><span class="w"> </span><span class="p">]</span></code>:
-<div class="highlight"><pre><span></span><code>/add_tags/clean_tags?tags=%5B%22%20bikini%20%22%2C%20%22blue%20%20%20%20eyes%22%2C%20%22%20character%20%3A%20samus%20aran%20%22%2C%20%22%3A%29%22%2C%20%22%20%20%20%22%2C%20%22%22%2C%20%2210%22%2C%20%2211%22%2C%20%229%22%2C%20%22system%3Awew%22%2C%20%22-flower%22%5D
+<dd>Given tags <code class="highlight"><span class="p">[</span><span class="w"> </span><span class="s2">&quot; bikini &quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blue    eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; character : space bounty hunter &quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; :)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;   &quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;10&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;11&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;system:wew&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-flower&quot;</span><span class="w"> </span><span class="p">]</span></code>:
+<div class="highlight"><pre><span></span><code>/add_tags/clean_tags?tags=%5B%22%20bikini%20%22%2C%20%22blue%20%20%20%20eyes%22%2C%20%22%20character%20%3A%20space%20bounty%20hunter%20%22%2C%20%22%3A%29%22%2C%20%22%20%20%20%22%2C%20%22%22%2C%20%2210%22%2C%20%2211%22%2C%20%229%22%2C%20%22system%3Awew%22%2C%20%22-flower%22%5D
 </code></pre></div></dd>
 <dt>Response:</dt>
 <dd>
 <p>The tags cleaned according to hydrus rules. They will also be in hydrus human-friendly sorting order.
 <div class="highlight"><span class="filename">Example response</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;tags&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;10&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;11&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; ::)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bikini&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blue eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;character:samus aran&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;flower&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;wew&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="nt">&quot;tags&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;10&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;11&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; ::)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bikini&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blue eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;character:space bounty hunter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;flower&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;wew&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 </code></pre></div></p>
 <p>Mostly, hydrus simply trims excess whitespace, but the other examples are rare issues you might run into. 'system' is an invalid namespace, tags cannot be prefixed with hyphens, and any tag starting with ':' is secretly dealt with internally as "[no namespace]:[colon-prefixed-subtag]". Again, you probably won't run into these, but if you see a mismatch somewhere and want to figure it out, or just want to sort some numbered tags, you might like to try this.</p>
@@ -6439,8 +6455,8 @@ Accept: application/json
 </ul>
 </dd>
 <dt>Example request:</dt>
-<dd>Given tags <code class="highlight"><span class="p">[</span><span class="w"> </span><span class="s2">&quot;blue eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;samus aran&quot;</span><span class="w"> </span><span class="p">]</span></code>:
-<div class="highlight"><pre><span></span><code>/add_tags/get_siblings_and_parents?tags=%5B%22blue%20eyes%22%2C%20%22samus%20aran%22%5D
+<dd>Given tags <code class="highlight"><span class="p">[</span><span class="w"> </span><span class="s2">&quot;blue eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;space bounty hunter&quot;</span><span class="w"> </span><span class="p">]</span></code>:
+<div class="highlight"><pre><span></span><code>/add_tags/get_siblings_and_parents?tags=%5B%22blue%20eyes%22%2C%20%22space%20bounty%20hunter%22%5D
 </code></pre></div></dd>
 <dt>Response:</dt>
 <dd>
@@ -6469,31 +6485,31 @@ Accept: application/json
 <span class="w">        </span><span class="nt">&quot;ancestors&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;samus aran&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;space bounty hunter&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;6c6f63616c2074616773&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;ideal_tag&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;character:samus aran&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;ideal_tag&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;character:space bounty hunter&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nt">&quot;siblings&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="s2">&quot;samus aran&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="s2">&quot;samus_aran&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="s2">&quot;character:samus aran&quot;</span>
+<span class="w">          </span><span class="s2">&quot;space bounty hunter&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;space_bounty_hunter&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;character:space bounty hunter&quot;</span>
 <span class="w">        </span><span class="p">],</span>
 <span class="w">        </span><span class="nt">&quot;descendants&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="s2">&quot;character:samus aran (zero suit)&quot;</span>
-<span class="w">          </span><span class="s2">&quot;cosplay:samus aran&quot;</span>
+<span class="w">          </span><span class="s2">&quot;character:space bounty hunter (zero suit)&quot;</span>
+<span class="w">          </span><span class="s2">&quot;cosplay:space bounty hunter&quot;</span>
 <span class="w">        </span><span class="p">],</span>
 <span class="w">        </span><span class="nt">&quot;ancestors&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="s2">&quot;series:metroid&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="s2">&quot;studio:nintendo&quot;</span>
+<span class="w">          </span><span class="s2">&quot;series:bountyvania&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;studio:cool project house&quot;</span>
 <span class="w">        </span><span class="p">]</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;877bfcf81f56e7e3e4bc3f8d8669f92290c140ba0acfd6c7771c5e1dc7be62d7&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;ideal_tag&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;samus aran&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;ideal_tag&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;space bounty hunter&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nt">&quot;siblings&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="s2">&quot;samus aran&quot;</span>
+<span class="w">          </span><span class="s2">&quot;space bounty hunter&quot;</span>
 <span class="w">        </span><span class="p">],</span>
 <span class="w">        </span><span class="nt">&quot;descendants&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="s2">&quot;zero suit samus&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="s2">&quot;samus_aran_(cosplay)&quot;</span>
+<span class="w">          </span><span class="s2">&quot;zero suit space bounty hunter&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;space_bounty_hunter_(cosplay)&quot;</span>
 <span class="w">        </span><span class="p">],</span>
 <span class="w">        </span><span class="nt">&quot;ancestors&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">      </span><span class="p">}</span>
@@ -6906,11 +6922,12 @@ Accept: application/json
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Adding or Deleting</p>
-<p>You can add or delete type 0 (web domain) timestamps, but you can only edit existing instances of all the others. This is broadly how the <em>manage times</em> dialog works, also. Stuff like 'last viewed' is tied up with other numbers like viewtime and num_views, so if that isn't already in the database, then we can't just add the timestamp on its own. Same with 'deleted time' for a file that isn't deleted! So, in general, other than web domain stuff, you can only edit times you already see in <a href="#get_files_file_metadata">/get_files/file_metadata</a>.</p>
+<p>You can add or delete type 0 (web domain) timestamps and set an archived time with no previous record, but you can only edit existing instances of all the others. This is broadly how the <em>manage times</em> dialog works, also. Stuff like 'last viewed' is tied up with other numbers like viewtime and num_views, so if that isn't already in the database, then we can't just add the timestamp on its own. Same with 'deleted time' for a file that isn't deleted! So, in general, other than web domain stuff, you can only edit times you already see in <a href="#get_files_file_metadata">/get_files/file_metadata</a>.</p>
 </div>
 <p>If you select 0, you have to include a <code>domain</code>, which will usually be a web domain, but you can put anything in there.</p>
 <p>If you select 1, the client will <em>not</em> alter the modified time on your hard disk, only the database record. This is unlike the dialog. Let's let this system breathe a bit before we try to get too clever.</p>
 <p>If you select 3, 4, or 7, you have to include a <code>file_service_key</code>. The 'previously imported' time is for deleted files only; it records when the file was originally imported so if the user hits 'undo', the database knows what import time to give back to it.</p>
+<p>If you select 5 and the file is currently in the inbox, it will be archived!</p>
 <p>If you select 6, you have to include a <code>canvas_type</code>, which is:</p>
 <ul>
 <li>0 - Media Viewer (the normal viewer in hydrus that is its own window)</li>
@@ -7030,7 +7047,7 @@ Accept: application/json
 </ul>
 </dd>
 </dl>
-<div class="highlight"><span class="filename">Example request for 16 files (system:limit=16) in the inbox with tags "blue eyes", "blonde hair", and "кино"</span><pre><span></span><code>/get_files/search_files?tags=%5B%22blue%20eyes%22%2C%20%22blonde%20hair%22%2C%20%22%5Cu043a%5Cu0438%5Cu043d%5Cu043e%22%2C%20%22system%3Ainbox%22%2C%20%22system%3Alimit%3D16%22%5D
+<div class="highlight"><span class="filename">Example request for 16 files (system:limit=16) in the inbox with tags &quot;blue eyes&quot;, &quot;blonde hair&quot;, and &quot;кино&quot;</span><pre><span></span><code>/get_files/search_files?tags=%5B%22blue%20eyes%22%2C%20%22blonde%20hair%22%2C%20%22%5Cu043a%5Cu0438%5Cu043d%5Cu043e%22%2C%20%22system%3Ainbox%22%2C%20%22system%3Alimit%3D16%22%5D
 </code></pre></div>
 <p>If the access key's permissions only permit search for certain tags, at least one positive whitelisted/non-blacklisted tag must be in the "tags" list or this will 403. Tags can be prepended with a hyphen to make a negated tag (e.g. "-green eyes"), but these will not be checked against the permissions whitelist.</p>
 <p>Wildcards and namespace searches are supported, so if you search for 'character:sam*' or 'series:*', this will be handled correctly clientside.</p>
@@ -7136,12 +7153,12 @@ Accept: application/json
 <p>Please test out the system predicates you want to send. If you are in <em>help-&gt;advanced mode</em>, you can test this parser in the advanced text input dialog when you click the OR* button on a tag autocomplete dropdown. More system predicate types and input formats will be available in future. Reverse engineering system predicate data from text is obviously tricky. If a system predicate does not parse, you'll get 400.</p>
 <p>Also, OR predicates are now supported! Just nest within the tag list, and it'll be treated like an OR. For instance:</p>
 <ul>
-<li><code class="highlight"><span class="p">[</span><span class="w"> </span><span class="s2">&quot;skirt&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;samus aran&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;lara croft&quot;</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;system:height &gt; 1000&quot;</span><span class="w"> </span><span class="p">]</span></code></li>
+<li><code class="highlight"><span class="p">[</span><span class="w"> </span><span class="s2">&quot;skirt&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;space bounty hunter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;jane raider&quot;</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;system:height &gt; 1000&quot;</span><span class="w"> </span><span class="p">]</span></code></li>
 </ul>
 <p>Makes:</p>
 <ul>
 <li>skirt</li>
-<li>samus aran OR lara croft</li>
+<li>space bounty hunter OR jane raider</li>
 <li>system:height &gt; 1000</li>
 </ul>
 <p>The file and tag services are for search domain selection, just like clicking the buttons in the client. They are optional--default is 'combined local file domains' and 'all known tags'.</p>
@@ -7396,6 +7413,7 @@ Accept: application/json
 <span class="w">      </span><span class="nt">&quot;num_frames&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">102</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;num_words&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;is_inbox&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;time_archived&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1641044542</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;is_local&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;is_trashed&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;is_deleted&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
@@ -7406,7 +7424,7 @@ Accept: application/json
 <span class="w">      </span><span class="nt">&quot;known_urls&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="s2">&quot;https://somebooru.org/index.php?page=post&amp;s=view&amp;id=12345&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="s2">&quot;https://cdn.somebooru.org/images/4d/7f/4d7f62bb8675cef84760d6263e4c254c5129ef56.jpg&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;http://somegallerysite.com/post/123456/samus_is_cool.jpg&quot;</span>
+<span class="w">        </span><span class="s2">&quot;http://somegallerysite.com/post/123456/space bounty hunter_is_cool.jpg&quot;</span>
 <span class="w">      </span><span class="p">],</span>
 <span class="w">      </span><span class="nt">&quot;ratings&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nt">&quot;74d52c6238d25f846d579174c11856b1aaccdb04a185cb2c79f0d0e499284f2c&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
@@ -7416,11 +7434,11 @@ Accept: application/json
 <span class="w">      </span><span class="nt">&quot;tags&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nt">&quot;6c6f63616c2074616773&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">&quot;storage_tags&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;0&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;samus favourites&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;0&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;space bounty hunter favourites&quot;</span><span class="p">],</span>
 <span class="w">            </span><span class="nt">&quot;2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;process this later&quot;</span><span class="p">]</span>
 <span class="w">          </span><span class="p">},</span>
 <span class="w">          </span><span class="nt">&quot;display_tags&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;0&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;samus favourites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;favourites&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;0&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;space bounty hunter favourites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;favourites&quot;</span><span class="p">],</span>
 <span class="w">            </span><span class="nt">&quot;2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;process this later&quot;</span><span class="p">]</span>
 <span class="w">          </span><span class="p">}</span>
 <span class="w">        </span><span class="p">},</span>
@@ -7436,11 +7454,11 @@ Accept: application/json
 <span class="w">        </span><span class="p">},</span>
 <span class="w">        </span><span class="nt">&quot;616c6c206b6e6f776e2074616773&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">&quot;storage_tags&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;0&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;samus favourites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blonde_hair&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blue_eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;looking_at_viewer&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;0&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;space bounty hunter favourites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blonde_hair&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blue_eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;looking_at_viewer&quot;</span><span class="p">],</span>
 <span class="w">            </span><span class="nt">&quot;1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;bodysuit&quot;</span><span class="p">]</span>
 <span class="w">          </span><span class="p">},</span>
 <span class="w">          </span><span class="nt">&quot;display_tags&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;0&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;samus favourites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;favourites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blonde hair&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blue_eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;looking at viewer&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;0&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;space bounty hunter favourites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;favourites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blonde hair&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blue_eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;looking at viewer&quot;</span><span class="p">],</span>
 <span class="w">            </span><span class="nt">&quot;1&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;bodysuit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;clothing&quot;</span><span class="p">]</span>
 <span class="w">          </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
@@ -9490,7 +9508,7 @@ This request will also return any cookies for subdomains. The session system in 
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="January 28, 2026 22:04:47 UTC">January 28, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="April 15, 2026 20:58:27 UTC">April 15, 2026</span>
   </span>
 
     
