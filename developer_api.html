@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/favicon.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1639,7 +1639,7 @@
   <span class="md-ellipsis">
     
   
-    Running In Wine
+    Running In Wine/Bottles
   
 
     
@@ -3554,6 +3554,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manage_pages_new_page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /manage_pages/new_page
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5460,6 +5471,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#manage_pages_new_page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /manage_pages/new_page
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5716,7 +5738,7 @@
 </code></pre></div>
 </li>
 </ul>
-<p>The API returns JSON for everything except actual file/thumbnail requests. Every JSON response includes the <code>version</code> of the Client API and <code>hydrus_version</code> of the Client hosting it (for brevity, these values are not included in the example responses in this help). For errors, you'll typically get 400 for a missing/invalid parameter, 401/403/419 for missing/insufficient/expired access, and 500 for a real deal serverside error.</p>
+<p>The API returns JSON for everything except actual file/thumbnail requests. <strong>Every JSON response includes the <code>version</code> of the Client API and <code>hydrus_version</code> of the Client hosting it (for brevity, these values are not included in the example responses in this help).</strong> For errors, you'll typically get 400 for a missing/invalid parameter, 401/403/419 for missing/insufficient/expired access, and 500 for a real deal serverside error.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For any request sent to the API, the total size of the initial request line (this includes the URL and any parameters) and the headers must not be larger than 2 megabytes.
@@ -5893,7 +5915,7 @@ Accept: application/json
 <span class="w">        </span><span class="nt">&quot;brush&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#BFBFBF&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nt">&quot;pen&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#000000&quot;</span>
 <span class="w">      </span><span class="p">}</span>
-<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example local rating numerical service&quot;</span><span class="p">,</span>
@@ -5986,7 +6008,7 @@ Accept: application/json
 <p>Rating services have some extra data:</p>
 <ul>
 <li>They all have some <code>colours</code> for differing rating states, the same as you'd see in <code>manage services</code>. Pen and brush are the line and the fill of the rating star shape, respectively. <code>like</code> generally means set/left-click, <code>dislike</code> means off/right-click, <code>null</code> means not set, and <code>mixed</code> is what I show in the edit rating dialog for multiple files when the files have differing values. Feel free to use them however you like.</li>
-<li>They all have <code>show_in_thumbnail</code> and <code>show_in_thumbnail_even_if_null</code>, which you can obey in your display context if convenient.</li>
+<li>They all have <code>show_in_thumbnail</code> and <code>show_in_thumbnail_even_when_null</code>, which you can obey in your display context if convenient.</li>
 <li>Like/dislike and numerical services have <code>star_shape</code>, which is one of <code>circle | square | fat star | pentagram star | six point star | eight point star | x shape | square cross | triangle up | triangle down | triangle right | triangle left | diamond | rhombus right | rhombus left | hourglass | pentagon | hexagon | small hexagon | heart | teardrop | crescent moon</code> -or- <code>svg</code>, which means a custom user svg that can be fetched with <a href="#get_service_rating_svg">/get_service_rating_svg</a>.</li>
 <li>Numerical services have <code>min_stars</code> (0 or 1) and <code>max_stars</code> (1 to 20). <code>allows_zero</code> lines up with <code>min_stars</code> and is for your convenience.</li>
 </ul>
@@ -9413,6 +9435,105 @@ This request will also return any cookies for subdomains. The session system in 
 <dd>200 with no content. If the page key is not found, this will 404.</dd>
 </dl>
 <p>Poll the <code>page_state</code> in <a href="#manage_pages_get_pages">/manage_pages/get_pages</a> or <a href="#manage_pages_get_page_info">/manage_pages/get_page_info</a> to see when the search is complete.</p>
+<h3 id="manage_pages_new_page"><strong>POST <code>/manage_pages/new_page</code></strong><a class="headerlink" href="#manage_pages_new_page" title="Permanent link">&para;</a></h3>
+<p><em>Create a new page in the main GUI.</em></p>
+<dl>
+<dt>Restricted access:</dt>
+<dd>YES. Manage Pages permission needed.</dd>
+<dt>Required Headers:</dt>
+<dd>
+<ul>
+<li><code>Content-Type</code>: application/json</li>
+</ul>
+</dd>
+<dt>Arguments (in JSON):</dt>
+<dd>
+<ul>
+<li>
+<p><code>page_type</code>: (int, required) The type of page to create.</p>
+<p>The supported page types are:</p>
+<ul>
+<li>1 - Gallery downloader</li>
+<li>2 - Simple downloader</li>
+<li>3 - Hard drive import</li>
+<li>5 - Petitions</li>
+<li>6 - File search</li>
+<li>7 - URL downloader</li>
+<li>8 - Duplicates</li>
+<li>9 - Thread watcher</li>
+<li>10 - Page of pages</li>
+</ul>
+</li>
+<li>
+<p><code>page_name</code>: (optional, string) A name for the new page. If not provided, a default name is used.</p>
+</li>
+<li><code>page_of_pages_key</code>: (optional, hexadecimal) The page key of a 'page of pages' to insert the new page into. If not provided, the top-level notebook is used.</li>
+<li><code>focus_page</code>: (optional, bool, default <code>true</code>) Whether to switch the UI to the new page after creation.</li>
+<li><code>tags</code>: (optional, a list of tag strings, default <code>[]</code>) Tags for a file search (page type 6) page's search. Works with the same <a href="#get_files_search_files">system predicate</a> syntax.</li>
+<li><code>file_service_key</code>: (optional, hexadecimal) The file service for the new page's search domain (page types 6 and 8).</li>
+<li><code>tag_service_key</code>: (optional, hexadecimal) The tag service for the new page's search domain (page type 6).</li>
+<li><code>hashes</code>: (optional, a list of hexadecimal SHA256 hashes) Initial hashes to show on a file search (page type 6) page.</li>
+<li><code>service_key</code>: (optional, hexadecimal) The service key for a petitions (page type 5) page.</li>
+<li><code>paths</code>: (optional, a list of file system paths, default <code>[]</code>) File paths to import for a hard drive import (page type 3) page.</li>
+<li><code>delete_after_success</code>: (optional, bool, default <code>false</code>) Whether to delete source files after a successful import (page type 3).</li>
+<li><code>file_sort_type</code>: (optional, int) Sort type for the page, same enum as in <a href="#get_files_search_files">/get_files/search_files</a> (page type 6). Mutually exclusive with <code>file_sort_namespaces</code>.</li>
+<li><code>file_sort_asc</code>: (optional, bool, default <code>true</code>) Sort order for files (page type 6).</li>
+<li><code>file_sort_namespaces</code>: (optional, a list of namespace strings) Sort by namespace order (page type 6). Mutually exclusive with <code>file_sort_type</code>.</li>
+<li><code>collect_namespaces</code>: (optional, a list of namespace strings) Namespaces to collect/group files by (page type 6).</li>
+<li><code>system_hash_locked</code>: (optional, bool) If <code>true</code>, locks the page to the given hashes and syncs new/removed hashes (page type 6). Requires <code>hashes</code> to be provided.</li>
+<li><code>urls</code>: (optional, a list of URL strings, default <code>[]</code>) URLs to pend for a URL downloader (page type 7) page.</li>
+<li><code>url</code>: (optional, string) A URL for a gallery/thread watcher (page type 9) page.</li>
+</ul>
+</dd>
+</dl>
+<div class="highlight"><span class="filename">Example request body (file search page)</span><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;page_type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;page_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my search&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tags&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;blue eyes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;blonde hair&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;file_service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6c6f63616c2066696c6573&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tag_service_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6c6f63616c2074616773&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;focus_page&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">Example request body (page of pages)</span><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;page_type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;page_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my sub-notebook&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;focus_page&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">Example request body (URL downloader with seeds)</span><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;page_type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;page_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my urls&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;urls&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;https://example.com/image1.png&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;https://example.com/image2.png&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;focus_page&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">Example request body (thread watcher)</span><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;page_type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;page_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my watcher&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/gallery/page/1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;focus_page&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">Example request body (hard drive import)</span><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;page_type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;page_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my import&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;paths&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;E:\\to_import&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;delete_after_success&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;focus_page&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div>
+<dl>
+<dt>Response:</dt>
+<dd>A JSON Object containing the new page's details.</dd>
+</dl>
+<div class="highlight"><span class="filename">Example response</span><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;page_key&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;af98318b6eece15fef3cf0378385ce759bfe056916f6e12157cd928eb56c1f18&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;page_type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;page_name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my search&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>page_key</code> is the page's unique identifier for use in other manage_pages commands. If the <code>page_of_pages_key</code> is not found, this will 404. If the <code>page_type</code> is unrecognised or unsupported, or contradictory arguments like both <code>file_sort_type</code> and <code>file_sort_namespaces</code> are provided, this will 400. Petitions pages require a <code>service_key</code>, otherwise they will 400.</p>
 <h2 id="managing_popups">Managing Popups<a class="headerlink" href="#managing_popups" title="Permanent link">&para;</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Under Construction</p>
@@ -9921,7 +10042,7 @@ This request will also return any cookies for subdomains. The session system in 
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 3, 2026 21:42:01 UTC">June 3, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 11, 2026 21:06:33 UTC">July 11, 2026</span>
   </span>
 
     
@@ -10060,7 +10181,7 @@ This request will also return any cookies for subdomains. The session system in 
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tracking", "navigation.sections", "navigation.tabs", "content.tabs.link", "navigation.top", "search.suggest", "content.code.annotate", "navigation.instant", "content.action.edit"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

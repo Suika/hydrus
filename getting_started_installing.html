@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/favicon.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1839,7 +1839,7 @@
   <span class="md-ellipsis">
     
   
-    Running In Wine
+    Running In Wine/Bottles
   
 
     
@@ -3326,15 +3326,15 @@
 <p>You can get the latest release at <a href="https://github.com/hydrusnetwork/hydrus/releases">the github releases page</a>.</p>
 <p>I try to release a new version every Wednesday by 8pm EST and write an accompanying post on <a href="http://hydrus.tumblr.com/">my tumblr</a> and a Hydrus Network General thread on <a href="https://8chan.moe/t/catalog.html">8chan.moe /t/</a>.</p>
 <h2 id="installing">Installing<a class="headerlink" href="#installing" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Windows</label><label for="__tabbed_1_2">macOS</label><label for="__tabbed_1_3">Linux</label><label for="__tabbed_1_4">Docker</label><label for="__tabbed_1_5">From Source</label></div>
+<p>Hydrus is available as a simple built release that extracts/installs and lets you just run an executable. It is also easy to run it directly from source.</p>
+<p>Running the program from source takes a little extra first-time setup, but it almost always runs better and future updates only take a few seconds. You might like to start with the built release and migrate to source later.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Windows</label><label for="__tabbed_1_2">Linux</label><label for="__tabbed_1_3">macOS</label><label for="__tabbed_1_4">Docker</label><label for="__tabbed_1_5">From Source</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ul>
 <li>If you want the easy solution, download the .exe installer. Run it, hit ok several times.</li>
 <li>If you know what you are doing and want a little more control, get the .zip. Don't extract it to Program Files unless you are willing to run it as administrator every time (it stores all its user data inside its own folder). You probably want something like D:\hydrus.</li>
-<li><em>If you run &lt;Win10, you need <a href="https://www.microsoft.com/en-us/download/details.aspx?id=48145">Visual C++ Redistributable for Visual Studio 2015</a> if you don't already have it for vidya.</em></li>
-<li><em>If you use Windows 10 N (a version of Windows without some media playback features), you will likely need the 'Media Feature Pack'. There have been several versions of this, so it may best found by searching for the latest version or hitting Windows Update, but otherwise check <a href="https://support.microsoft.com/en-us/help/3145500/media-feature-pack-list-for-windows-n-editions">here</a>.</em>  </li>
-<li><em>If you run Win7, you cannot run Qt6 programs, so you cannot run the official executable release. You have options by <a href="running_from_source.html">running from source</a>.</em></li>
+<li><em>If you run Win 10, the built release may not run, and you are probably looking at cobbling a source install together, but the clock is ticking on that, too. I'm not telling you anything you don't know, but it is time to migrate to Linux mate.</em></li>
 <li><strong>Third parties (not maintained by Hydrus Developer)</strong>:  <ul>
 <li><a href="https://community.chocolatey.org/packages/hydrus-network">Chocolatey</a></li>
 <li><a href="https://github.com/ScoopInstaller/Scoop">Scoop</a> (<code>hydrus-network</code> in the 'Extras' bucket)    </li>
@@ -3345,33 +3345,19 @@
 </ul>
 </div>
 <div class="tabbed-block">
+<p>I generally recommend Linux users <a href="running_from_source.html">run from source</a>, but I do offer an Ubuntu-built built release every week. To set up this built release:</p>
 <ul>
-<li>I used to have an Intel App, but unfortunately the move to Apple Silicon presented too many technical hurdles to keep going.</li>
-<li>The program has always worked better on macOS when <a href="running_from_source.html">run from source</a>, and this is now the only option here.</li>
+<li>Get the .tar.zst from the github releases page. Extract it anywhere you like and create a shortcut to the 'hydrus_client' executable in the base install dir. The build is made on Ubuntu, so if you run something else, compatibility is hit and miss.</li>
+<li>If you have problems running the Ubuntu build, <a href="running_from_source.html">running from source</a> is almost always an improvement.</li>
+<li>You can also try <a href="wine.html">running the Windows version in Wine/Bottles</a>.</li>
+<li><strong>Third parties (not maintained by Hydrus Developer)</strong>:  <ul>
+<li>(These both run from source, so if you have trouble with the built release, they may work better for you!)</li>
+<li><a href="https://aur.archlinux.org/packages/hydrus/">AUR package</a> - <em>Although please note that since AUR packages work off your system python, this has been known to cause issues when Arch suddenly updates to the latest Qt or something before we have had a chance to test things and it breaks hydrus. If you can, try just <a href="running_from_source.html">running from source</a> yourself instead, where we can control things better!</em></li>
+<li><a href="https://flathub.org/apps/details/io.github.hydrusnetwork.hydrus">flatpak</a> </li>
 </ul>
-<div class="admonition info">
-<p class="admonition-title">mpv on macOS</p>
-<p>macOS users have no mpv support for now. Use the QtMediaPlayer instead!</p>
-</div>
-</div>
-<div class="tabbed-block">
-<div class="admonition warning">
-<p class="admonition-title">Wayland (and MPV)</p>
-<p>Unfortunately, hydrus has several bad bugs in Wayland. The mpv window will not embed properly into the media viewer, menus and windows may position on the wrong screen, and the taskbar icon may not work at all. Newer versions are less buggy, and <a href="running_from_source.html">running from source</a> may improve the situation, but some of these issues, particularly mpv embedding, seem to be intractable.</p>
-<p>If mpv is the only problem, then switch to the QtMediaPlayer under <code>options-&gt;media playback</code>.</p>
-<p>If you really want mpv or have other UI issues, user testing suggests that the best solution for now is just to launch the program in X11. Launch the program <em>without</em> the WAYLAND_DISPLAY variable and <em>with</em> <code>QT_QPA_PLATFORM=xcb</code>, which you can achieve with <code>unset WAYLAND_DISPLAY</code> and <code>export QT_QPA_PLATFORM=xcb</code> in a boot script that launches <code>hydrus_client</code>. You might need to do <code>sudo apt install xwayland</code> first.</p>
-<p>You should be able to see which window manager hydrus thinks it is running under in <code>help-&gt;about</code>, on the "Qt" row.</p>
-<p>I expect to revisit this question in future versions of Qt and Wayland, and I plan to try a different mpv embedding technique that I know Wayland should support--we'll see if the situation stabilises.</p>
-</div>
-<details class="warning">
-<summary>MangoHUD and MPV</summary>
-<p>A user notes that MangoHUD may also interfere with mpv, causing crashes.</p>
-<p>Try <code>unset MANGOHUD</code> or <code>export MANGOHUD=0</code> to remove the MangoHUD environment variable in your hydrus launch script to fix this!</p>
-</details>
-<details class="warning">
-<summary>KDE and QtMediaPlayer</summary>
-<p>A user notes that those on KDE may need the <code>mit-krb5</code> package to get QtMediaPlayer working. Hit up <code>help-&gt;about</code> and the "Optional Libraries" tab once you are up to see if QtMultimedia loaded ok.</p>
-</details>
+</li>
+</ul>
+<p>Then please check which of these notes may apply to you:</p>
 <div class="admonition note">
 <p class="admonition-title">Qt compatibility</p>
 <p>If <code>hydrus_client</code> fails to run, and from terminal it says something like this:</p>
@@ -3390,13 +3376,28 @@
 <p>One user reports that Fedora might need <code>libxkbcommon</code> too.</p>
 <p><strong>One user had a related error that caused a program crash any time he pressed any key. This was an <em>incompatibility</em> with the <code>libxkbcommon</code> bundled with the built release. The solution here--and with any other severe crashes than can be traced to a specific bundled .so file--is to run from source.</strong></p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">FFMPEG support</p>
+<p>Hydrus uses FFMPEG, but I do not bundle it with the Linux build. I assume you have a version you are happy with on your system.</p>
+<p>If you are uncertain whether you have FFMPEG, you either A) perhaps do not, or B) probably do, but it is an older 'LTS' version. Do not overwrite any system FFMPEG if you aren't sure of what you are doing.</p>
+<p>If you want the quick and easy fix, just go <a href="https://github.com/BtbN/FFmpeg-Builds/releases">here</a> and download the <code>linux64 gpl non-shared</code>. Extract the big 'ffmpeg' executable to your install_dir/lib/bin folder.</p>
+<p>I am probably just going to bundle a nice new version of FFMPEG in the Linux build in future.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Wayland (and MPV)</p>
+<p>Unfortunately, hydrus has several bad bugs in Wayland. The mpv window will not embed properly into the media viewer, menus and windows may position on the wrong screen, and the taskbar icon may not work at all. Newer versions are less buggy, and <a href="running_from_source.html">running from source</a> may improve the situation, but some of these issues, particularly mpv embedding, seem to be intractable.</p>
+<p>If mpv is the only problem, then switch to the QtMediaPlayer under <code>options-&gt;media playback</code>.</p>
+<p>If you really want mpv or have other UI issues, user testing suggests that the best solution for now is just to launch the program in X11. Launch the program <em>without</em> the WAYLAND_DISPLAY variable and <em>with</em> <code>QT_QPA_PLATFORM=xcb</code>, which you can achieve with <code>unset WAYLAND_DISPLAY</code> and <code>export QT_QPA_PLATFORM=xcb</code> in a boot script that launches <code>hydrus_client</code>. You might need to do <code>sudo apt install xwayland</code> first.</p>
+<p>You should be able to see which window manager hydrus thinks it is running under in <code>help-&gt;about</code>, on the "Qt" row.</p>
+<p>I expect to revisit this question in future versions of Qt and Wayland, and I plan to try a different mpv embedding technique that I know Wayland should support--we'll see if the situation stabilises.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">installing mpv</p>
 <ul>
-<li>Get the .tag.gz. Extract it somewhere useful and create shortcuts to 'hydrus_client' and 'hydrus_server' as you like. The build is made on Ubuntu, so if you run something else, compatibility is hit and miss.</li>
-<li>If you have problems running the Ubuntu build, <a href="running_from_source.html">running from source</a> is usually an improvement, and it is easy to set up these days.</li>
 <li>You might need to get 'libmpv1' or 'libmpv2' to get mpv working and playing video/audio. This is the mpv <em>library</em>, not the necessarily the player. Check <em>help-&gt;about</em> to see if it is available--if not, see if you can get it like so:<ul>
 <li><code>sudo apt install libmpv1</code> or <code>sudo apt install libmpv2</code></li>
 <li>Use <em>options-&gt;media</em> to set your audio/video/animations to 'show using mpv' once you have it installed.</li>
-<li>If the about window provides you an mpv error popup like this:<br />
+<li>If the <code>help-&gt;about</code> window provides you an mpv error popup like this:<br />
 <div class="highlight"><pre><span></span><code>OSError: /lib/x86_64-linux-gnu/libgio-2.0.so.0: undefined symbol: g_module_open_full
 (traceback)
 pyimod04_ctypes.install.&lt;locals&gt;.PyInstallerImportError: Failed to load dynlib/dll &#39;libmpv.so.1&#39;. Most likely this dynlib/dll was not found when the application was frozen.
@@ -3411,24 +3412,31 @@ Then please do this:  <ol>
 </li>
 </ul>
 </li>
-<li>You can also try <a href="wine.html">running the Windows version in wine</a>.</li>
-<li><strong>Third parties (not maintained by Hydrus Developer)</strong>:  <ul>
-<li>(These both run from source, so if you have trouble with the built release, they may work better for you!)</li>
-<li><a href="https://aur.archlinux.org/packages/hydrus/">AUR package</a> - <em>Although please note that since AUR packages work off your system python, this has been known to cause issues when Arch suddenly updates to the latest Qt or something before we have had a chance to test things and it breaks hydrus. If you can, try just <a href="running_from_source.html">running from source</a> yourself instead, where we can control things better!</em></li>
-<li><a href="https://flathub.org/apps/details/io.github.hydrusnetwork.hydrus">flatpak</a> </li>
-</ul>
-</li>
 </ul>
 </div>
-<div class="tabbed-block">
-<ul>
-<li>A rudimentary documentation for the <a href="https://github.com/hydrusnetwork/hydrus/pkgs/container/hydrus">container</a> setup can be found <a href="docker.html">here</a>.</li>
-</ul>
+<details class="warning">
+<summary>MangoHUD and MPV</summary>
+<p>A user notes that MangoHUD may also interfere with mpv, causing crashes.</p>
+<p>Try <code>unset MANGOHUD</code> or <code>export MANGOHUD=0</code> to remove the MangoHUD environment variable in your hydrus launch script to fix this!</p>
+</details>
+<details class="warning">
+<summary>KDE and QtMediaPlayer</summary>
+<p>A user notes that those on KDE may need the <code>mit-krb5</code> package to get QtMediaPlayer working. Hit up <code>help-&gt;about</code> and the "Optional Libraries" tab once you are up to see if QtMultimedia loaded ok.</p>
+</details>
 </div>
 <div class="tabbed-block">
-<ul>
-<li>You can also <a href="running_from_source.html">run from source</a>. This is often the best way to fix compatibility problems, the only way to run on macOS, and the most pleasant way to run and update the program (you can update in five seconds!), although it requires a bit more work to set up the first time. It is not too complicated to do, though--my guide will walk you through each step.</li>
-</ul>
+<p>I used to have an Intel App, but unfortunately the move to Apple Silicon presented too many technical hurdles to keep going.</p>
+<p>The program has always worked better on macOS when <a href="running_from_source.html">run from source</a>, and this is now the only option here.</p>
+<div class="admonition info">
+<p class="admonition-title">mpv on macOS</p>
+<p>macOS users have no mpv support for now. Use the QtMediaPlayer instead!</p>
+</div>
+</div>
+<div class="tabbed-block">
+<p>A rudimentary documentation for the <a href="https://github.com/hydrusnetwork/hydrus/pkgs/container/hydrus">container</a> setup can be found <a href="docker.html">here</a>.</p>
+</div>
+<div class="tabbed-block">
+<p>You can also <a href="running_from_source.html">run from source</a>. This is often the best way to fix compatibility problems, the only way to run on macOS, and the most pleasant way to run and update the program (you can update in five seconds!), although it requires a bit more work to set up the first time. It is not complicated--my guide will walk you through each step.</p>
 </div>
 </div>
 </div>
@@ -3678,7 +3686,7 @@ Almost every OS you can name.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 14, 2026 22:04:06 UTC">June 14, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 8, 2026 21:22:12 UTC">July 8, 2026</span>
   </span>
 
     
@@ -3815,7 +3823,7 @@ Almost every OS you can name.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tracking", "navigation.sections", "navigation.tabs", "content.tabs.link", "navigation.top", "search.suggest", "content.code.annotate", "navigation.instant", "content.action.edit"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

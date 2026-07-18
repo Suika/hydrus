@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/favicon.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1709,6 +1709,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Environment setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advanced_tricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced tricks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1960,7 +1977,7 @@
   <span class="md-ellipsis">
     
   
-    Running In Wine
+    Running In Wine/Bottles
   
 
     
@@ -3341,6 +3358,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Environment setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advanced_tricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced tricks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -3573,7 +3607,7 @@
 <p>There are now setup scripts that make this easy. You do not need any python experience.</p>
 <h3 id="summary">Summary:<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
 <ol>
-<li>Get Python.</li>
+<li>Get Git/Python.</li>
 <li>Get Hydrus source.</li>
 <li>Get mpv/SQLite/FFMPEG.</li>
 <li>Run setup_venv script.</li>
@@ -3610,52 +3644,78 @@
 </ul>
 <p>Git should now be installed on your system. Any <em>new</em> terminal/command line/powershell window (right-click on any folder and hit something like 'Open in terminal') now has the <code>git</code> command!</p>
 </details>
-<details class="warning">
-<summary>Windows 7</summary>
-<p>For a long time, I supported Windows 7 via running from source. Unfortunately, as libraries and code inevitably updated, this finally seems to no longer be feasible. Python 3.8 will no longer run the program. I understand v582 is one of the last versions of the program to work.</p>
-<p>First, you will have to install the older <a href="https://www.python.org/downloads/release/python-3810/">Python 3.8</a>, since that is the latest version that you can run.</p>
-<p>Then, later, when you do the <code>git clone https://github.com/hydrusnetwork/hydrus</code> line, you will need to run <code>git checkout tags/v578</code>, which will rewind you to that point in time.</p>
-<p>I can't promise anything though. You may like to think about moving to Linux.</p>
-</details>
 <p>If you do not know if you have Python, you probably do not. Let's check--right-click on any folder and select 'open in terminal' and copy/paste the following:</p>
-<p><code>python --version</code></p>
+<div class="highlight"><pre><span></span><code>python --version
+</code></pre></div>
 <p>If you get some nice python version information, you have python. Hydrus should be fine with Python 3.10-3.13. If you are on 3.14+, that may be ok, but select the 'advanced' setup later on and choose the '(t)est' options. If you are stuck on something older, try the same thing, but with the '(o)lder' options (but I can't promise it will work!).</p>
 <p>If you don't have python, we need to get it. Try 3.12 <a href="https://www.python.org/downloads/windows/">here</a>. During the install process, make sure it has something like 'Add Python to PATH' checked. This makes Python available everywhere in Windows.  </p>
 <p>Once it is installed, then, <em>after installation is totally complete</em>, open up a new terminal (It needs to be a new terminal to catch your now-updated PATH) and copy/paste the following:</p>
-<p><code>python --version</code><br />
-<code>python -m pip --version</code><br />
-<code>python -m venv --help</code></p>
+<p><div class="highlight"><pre><span></span><code>python --version
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>python -m pip --version
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>python -m venv --help
+</code></pre></div></p>
 <p>If all these produce good output (no errors), you are good to go!</p>
 </div>
 <div class="tabbed-block">
 <p>You probably have git, but let's check by opening a new terminal and going:</p>
-<p><code>git --version</code></p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>--version
+</code></pre></div>
 <p>If you do not get a nice answer, you will want to install it. If you are on Debian/Ubuntu/Mint, you'll most likely be using <code>apt</code>, like this:</p>
-<p><code>sudo apt install git</code></p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git
+</code></pre></div>
 <p>If you are in the Arch family, you may be on <code>pacman</code>. In this case, where I might say in this help to do <code>sudo apt install package</code>, you are probably looking at <code>sudo pacman -S package</code>, so:</p>
-<p><code>sudo pacman -S git</code></p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>git
+</code></pre></div>
 <p>You should already have a fairly new python. Hydrus is fine with Python 3.10-3.13. If you are on 3.14+, that may be ok, but select the 'advanced' setup later on and choose the '(t)est' options. If you are stuck on something older, try the same thing, but with the '(o)lder' options (but I can't promise it will work!). You can find out what version you have just by opening a new terminal and typing <code>python3</code> or <code>python</code>.</p>
 <p>You are going to need <code>pip</code> and <code>venv</code>. These are often bundled with a python install, but not always with a system python. Open a terminal and try these two lines:</p>
-<p><code>python3 -m pip --version</code><br />
-<code>python3 -m venv --help</code></p>
+<p><div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>--version
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>--help
+</code></pre></div></p>
 <p>If it complains about either, you will need to install them. Try this:</p>
-<p><code>sudo apt install python3-pip</code><br />
-<code>sudo apt install python3-venv</code></p>
+<p><div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-pip
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-venv
+</code></pre></div></p>
 </div>
 <div class="tabbed-block">
 <p><em>If you are currently on the old App and need to migrate to a source install, get a test situation running and then scroll down to the <a href="#migrating_from_an_existing_install">migrating from an existing install</a> section.</em></p>
 <p>You may not have git already, so open a new terminal and check with:</p>
-<p><code>git --version</code></p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>--version
+</code></pre></div>
 <p>If you do not get a nice version back, you will want to install it, most likely with:</p>
-<p><code>brew install git</code></p>
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>git
+</code></pre></div>
 <p>You should already have a fairly new python. Hydrus should be fine with Python 3.10-3.13. If you are on 3.14+, that may be ok, but select the 'advanced' setup later on and choose the '(t)est' options. If you are stuck on something older, try the same thing, but with the '(o)lder' options (but I can't promise it will work!). You can find out what version you have just by opening a new terminal and typing <code>python3</code> or <code>python</code>.</p>
 <p>You are going to need <code>pip</code> and <code>venv</code>. These are often bundled with a python install, but not always with a system python. Open a terminal and try these two lines:</p>
-<p><code>python3 -m pip --version</code><br />
-<code>python3 -m venv --help</code></p>
+<p><div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>--version
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>--help
+</code></pre></div></p>
 <p>If it complains about either, you will need to install them. You do not want to fight with your system python, so you should investigate <code>brew install python</code> to install a separate python just for your username.</p>
 </div>
 </div>
 </div>
+<details class="note">
+<summary>I want to use a different python version!</summary>
+<p>Most 'LTS' releases will have a system python that is frozen at an older version for stability. You can run hydrus with this usually no problem, but you might like to bump things up to take advantage of speed improvements and bug fixes, particularly if your hardware is good and does not strictly need all that stability safety.</p>
+<p>I recommend <a href="https://github.com/pyenv/pyenv">pyenv</a>, which makes it very simple to install and use multiple versions of python without conflicting with your system python at all. The process I have figured out is:</p>
+<ul>
+<li>Hit up their github, check that the primary install line is still: <code>curl -fsSL https://pyenv.run | bash</code></li>
+<li>Check the terminal output once it is done. It will probably moan about your bash profiles. You can edit manually but they probably provide this to do it for you: <code>~/.pyenv/bin/pyenv init --install</code></li>
+<li>Do this so you can compile python:
+    <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>build-essential<span class="w"> </span>libssl-dev<span class="w"> </span>zlib1g-dev<span class="w"> </span>libbz2-dev<span class="w"> </span>libreadline-dev<span class="w"> </span>libsqlite3-dev<span class="w"> </span>curl<span class="w"> </span>git<span class="w"> </span>libncursesw5-dev<span class="w"> </span>xz-utils<span class="w"> </span>tk-dev<span class="w"> </span>libxml2-dev<span class="w"> </span>libxmlsec1-dev<span class="w"> </span>libffi-dev<span class="w"> </span>liblzma-dev
+</code></pre></div></li>
+<li>You are now good and a fresh terminal should respond to <code>pyenv</code>. The general routine is:</li>
+<li><code>pyenv install 3.13</code> (you now have the latest 3.13 installed)</li>
+<li><code>pyenv shell 3.13</code> (switches current terminal to that custom python)</li>
+<li>Now, when you do <code>./setup_venv.py</code>, it'll use that 3.13 to make the venv!</li>
+</ul>
+</details>
 <p><strong>Then, get the hydrus source.</strong> It is best to get it with Git: make a new folder somewhere, open a terminal in it, and then paste:</p>
 <div class="highlight"><pre><span></span><code>git clone https://github.com/hydrusnetwork/hydrus
 </code></pre></div>
@@ -3751,28 +3811,31 @@
 <div class="tabbed-block">
 <p><em>You do not need to run the setup script as sudo, and doing so may cause some things not to work. Just regular you in a normal terminal.</em></p>
 <p>The file is <code>setup_venv.py</code>. You may be able to double-click it. If not, open a terminal in the folder and type:  </p>
-<p><code>./setup_venv.py</code></p>
+<div class="highlight"><pre><span></span><code>./setup_venv.py
+</code></pre></div>
 <p>-or, explicitly-</p>
-<p><code>python setup_venv.py</code></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>setup_venv.py
+</code></pre></div>
 <p>If you do not have permission to execute the file, do this before trying again:  </p>
-<p><code>chmod +x setup_venv.py</code></p>
+<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>setup_venv.py
+</code></pre></div>
 <p>You will likely have to do the same on the other .sh or .py files.</p>
-<div class="admonition info">
-<p class="admonition-title">Desktop File</p>
-<p>If you like, you can later run the <code>setup_desktop.sh</code> file to install an io.github.hydrusnetwork.hydrus.desktop file to your applications folder. (Or check the template in <code>install_dir/static/io.github.hydrusnetwork.hydrus.desktop</code> and do it yourself!)</p>
-</div>
 </div>
 <div class="tabbed-block">
 <p><em>You do not need to run the setup script as sudo, and doing so may cause some things not to work. Just regular you.</em></p>
 <p>The file is <code>setup_venv.py</code>. You may be able to double-click it. If not, open a terminal in the folder and type:  </p>
-<p><code>./setup_venv.py</code></p>
+<div class="highlight"><pre><span></span><code>./setup_venv.py
+</code></pre></div>
 <p>-or, explicitly-</p>
-<p><code>python setup_venv.py</code></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>setup_venv.py
+</code></pre></div>
 <p>If you do not have permission to run the .command file, open a terminal on the folder and enter:</p>
 <p>If you do not have permission to execute the file, do this before trying again:  </p>
-<p><code>chmod +x setup_venv.py</code></p>
+<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>setup_venv.py
+</code></pre></div>
 <p>We used to do this via a .command file. If you want to run one of the other .command files, you likely also need this to tell Gatekeeper you are ok running it:</p>
-<p><code>sudo xattr -rd com.apple.quarantine the_script.command</code></p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>xattr<span class="w"> </span>-rd<span class="w"> </span>com.apple.quarantine<span class="w"> </span>the_script.command
+</code></pre></div>
 <p>You will likely have to do the same on the other .command files.</p>
 </div>
 </div>
@@ -3781,14 +3844,32 @@
 <p>This setup creates a copy of your system python in a folder called 'venv'. Is it completely non-destructive and undoable. If something messes up, or you want to make a different decision, just run the setup script again and it will clear out and reinstall everything. You can also just delete that folder to 'uninstall' the venv.</p>
 <p>The setup should <em>just work</em> on most normal computers, but very old or new systems or unusual architectures may run into trouble. Let me know if you have any problems.</p>
 <p>Then run the 'setup_help' script to build the help. This isn't necessary, but it is nice to have it built locally. You can run this again at any time to update to the current help.</p>
-<details class="note">
-<summary>Custom python</summary>
-<p>If you want to set up a venv using a different python than your system, just run <code>setup_venv.py</code> with that python, like this:</p>
-<p><code>/path/to/my/python setup_venv.py</code></p>
+<h5 id="advanced_tricks">Advanced tricks<a class="headerlink" href="#advanced_tricks" title="Permanent link">&para;</a></h5>
+<p>If you want to set up a venv using a different python than your system, you can just run <code>setup_venv.py</code> directly with that python, like this:</p>
+<div class="highlight"><pre><span></span><code>/path/to/my/python<span class="w"> </span>setup_venv.py
+</code></pre></div>
+<p>Or, as I said above, <code>pyenv</code> will let you replace the default python in the current shell easily too, in which case the regular <code>./setup_venv.py</code> will use your shimmed python.</p>
 <p>You can also select a custom venv destination:</p>
-<p><code>/path/to/my/314/python setup_venv.py -v=venv314</code></p>
-<p>If you are developing with hydrus, you can set up multiple venvs to test out different versions of python or, say, PySide vs PyQt.</p>
-</details>
+<div class="highlight"><pre><span></span><code>/path/to/my/314/python<span class="w"> </span>setup_venv.py<span class="w"> </span>-v<span class="o">=</span>venv314
+</code></pre></div>
+<p>And, for automation, you can run the script in non-interactive mode using <code>-i</code>:</p>
+<div class="highlight"><pre><span></span><code>/path/to/my/python<span class="w"> </span>setup_venv.py<span class="w"> </span>-i<span class="o">=</span>a
+</code></pre></div>
+<p><code>-i=s</code> will install the <code>(s)imple</code> install choice without asking you for confirmation. <code>-i=a</code> will choose the <code>(a)dvanced</code>, selecting the <code>(t)est</code> versions of any choice and saying <code>(y)es</code> to all optional libraries.</p>
+<p>If you are developing with hydrus, you can set up multiple venvs to test out different versions of python or, say, PySide vs PyQt. Just make a script like this and most of the work can be done in one action:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+
+pyenv<span class="w"> </span>shell<span class="w"> </span><span class="m">3</span>.10
+./setup_venv.py<span class="w"> </span>-v<span class="o">=</span>~/hyvenvs/venv310<span class="w"> </span>-i<span class="o">=</span>s
+pyenv<span class="w"> </span>shell<span class="w"> </span><span class="m">3</span>.11
+./setup_venv.py<span class="w"> </span>-v<span class="o">=</span>~/hyvenvs/venv311<span class="w"> </span>-i<span class="o">=</span>s
+pyenv<span class="w"> </span>shell<span class="w"> </span><span class="m">3</span>.12
+./setup_venv.py<span class="w"> </span>-v<span class="o">=</span>~/hyvenvs/venv312<span class="w"> </span>-i<span class="o">=</span>a
+pyenv<span class="w"> </span>shell<span class="w"> </span><span class="m">3</span>.13
+./setup_venv.py<span class="w"> </span>-v<span class="o">=</span>~/hyvenvs/venv313<span class="w"> </span>-i<span class="o">=</span>a
+pyenv<span class="w"> </span>shell<span class="w"> </span><span class="m">3</span>.14
+./setup_venv.py<span class="w"> </span>-v<span class="o">=</span>~/hyvenvs/venv314<span class="w"> </span>-i<span class="o">=</span>a
+</code></pre></div>
 <h4 id="running_it_1">Running it<a class="headerlink" href="#running_it_1" title="Permanent link">&para;</a></h4>
 <div class="admonition note">
 <p class="admonition-title">Run the launch script, not the .py</p>
@@ -3800,7 +3881,8 @@
 <div class="tabbed-block">
 <p>Run <code>hydrus_client.bat</code> to start the client.</p>
 <p>Alternately, if you want a very simple shortcut, you can call the venv directly, using the python executable we just installed. The setup venv script may have given you an example. It will look something like this:</p>
-<p><code>C:\Hydrus\venv\Scripts\pythonw.exe C:\Hydrus\hydrus_client.py</code></p>
+<div class="highlight"><pre><span></span><code>C:\Hydrus\venv\Scripts\pythonw.exe C:\Hydrus\hydrus_client.py
+</code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="admonition warning">
@@ -3821,10 +3903,10 @@
 <li><code>libxcb-cursor-dev</code></li>
 </ul>
 <p>With <code>apt</code>, that will be:</p>
-<ul>
-<li><code>sudo apt install libicu-dev</code></li>
-<li><code>sudo apt install libxcb-cursor-dev</code></li>
-</ul>
+<p><div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libicu-dev
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libxcb-cursor-dev
+</code></pre></div></p>
 <p>Or check your OS's package manager.</p>
 <p>One user reports that Fedora might need <code>libxkbcommon</code> too.</p>
 <p>If you still have trouble with the default Qt6 version, try running setup_venv again and choose a different version. There are several to choose from, including (w)riting a custom version. If you are having a lot of trouble, this list can be worth exploring: <a href="https://pypi.org/project/PySide6/#history">PySide6</a></p>
@@ -3859,6 +3941,10 @@
 </div>
 <div class="tabbed-block">
 <p>If you want to redirect your database or use any other launch arguments, then copy 'hydrus_client.sh' to 'hydrus_client-user.sh' and edit it, inserting your desired db path. Run this instead of 'hydrus_client.sh'. New <code>git pull</code> commands will not affect 'hydrus_client-user.sh'.</p>
+<div class="admonition info">
+<p class="admonition-title">Desktop File</p>
+<p>If you like, you can run the <code>setup_desktop.sh</code> file to install an io.github.hydrusnetwork.hydrus.desktop file to your applications folder. (Or check the template in <code>install_dir/static/io.github.hydrusnetwork.hydrus.desktop</code> and do it yourself!)</p>
+</div>
 </div>
 <div class="tabbed-block">
 <p>If you want to redirect your database or use any other launch arguments, then copy 'hydrus_client.command' to 'hydrus_client-user.command' and edit it, inserting your desired db path. Run this instead of 'hydrus_client.command'. New <code>git pull</code> commands will not affect 'hydrus_client-user.command'.</p>
@@ -4080,7 +4166,7 @@ C:\Users\Me\Hydrus\venv\Source\python.exe C:\Users\Me\Hydrus\hydrus_client.py
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 27, 2026 20:34:02 UTC">May 27, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 21, 2026 21:04:09 UTC">June 21, 2026</span>
   </span>
 
     
@@ -4217,7 +4303,7 @@ C:\Users\Me\Hydrus\venv\Source\python.exe C:\Users\Me\Hydrus\hydrus_client.py
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tracking", "navigation.sections", "navigation.tabs", "content.tabs.link", "navigation.top", "search.suggest", "content.code.annotate", "navigation.instant", "content.action.edit"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

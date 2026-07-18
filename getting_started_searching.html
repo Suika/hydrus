@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/favicon.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1806,7 +1806,7 @@
   <span class="md-ellipsis">
     
   
-    Running In Wine
+    Running In Wine/Bottles
   
 
     
@@ -3328,7 +3328,7 @@
 <p>There's a more advanced OR search function available by pressing the OR button. Previous knowledge of operators expected and required.</p>
 <h2 id="sorting">Sorting<a class="headerlink" href="#sorting" title="Permanent link">&para;</a></h2>
 <p>At the top-left of most pages there's a <code>sort by:</code> dropdown menu. Most of the options are self-explanatory. They do nothing except change in what order Hydrus presents the currently searched files to you.</p>
-<p>Default sort order and more <code>sort by: namespace</code> are found in <code>file -&gt; options -&gt; sort/collect</code>.</p>
+<p>Default sort order and more <code>namespace file sorting</code> options to sort by are found in <code>file -&gt; options -&gt; file sort/collect</code>.</p>
 <h3 id="sorting_with_systemlimit">Sorting with <code>system:limit</code><a class="headerlink" href="#sorting_with_systemlimit" title="Permanent link">&para;</a></h3>
 <p>If you add <code>system:limit</code> to a search, the client will consider what that page's current file sort. If the sort is simple--something like file size or import time--then it will sort your results before they come back and clip the limit according to that sort, getting the n 'largest file size' or 'newest imports' and so on. This can be a great way to set up a lightweight filtering page for 'the 256 biggest videos in my inbox'.</p>
 <p>If you change the sort, hydrus will try to refresh the search to match the new 'biggest' or 'thinnest' n files it needs to fetch. Hit F5 to force-refresh.</p>
@@ -3351,7 +3351,7 @@
 <p>The tooltip on the sort controls will say whether you are currently simple enough or too complicated to do a pre-sampling sort.</p>
 <p>A common reason for users wondering why they get random results for their sorted searches is their implicit <code>system:limit</code> set under <code>options -&gt; file search</code> is lower than the number of results their search would return, and they forgot about it. To address it, depending on your hardware specs and performance needs, you can either increase/remove the implicit <code>system:limit</code>, or you can explicitly add a high <code>system:limit</code> to queries only when exhaustive results are needed.</p>
 <h2 id="collecting">Collecting<a class="headerlink" href="#collecting" title="Permanent link">&para;</a></h2>
-<p>Collection is found under the <code>sort by:</code> dropdown and uses namespaces listed in the <code>sort by: namespace</code> sort options. The new namespaces will only be available in new pages.</p>
+<p>Collection is found under the <code>sort by:</code> dropdown and will collect thumbnails on a page into groups based on namespaced tags or rating services. It uses the namespaces listed in the <code>namespace file sorting</code> section in main options tab <code>file sort/collect</code>. Any changes to the set of namespaces will only be available in new pages.</p>
 
 
 
@@ -3372,7 +3372,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="April 1, 2026 21:28:13 UTC">April 1, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 21, 2026 21:48:17 UTC">June 21, 2026</span>
   </span>
 
     
@@ -3509,7 +3509,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tracking", "navigation.sections", "navigation.tabs", "content.tabs.link", "navigation.top", "search.suggest", "content.code.annotate", "navigation.instant", "content.action.edit"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
