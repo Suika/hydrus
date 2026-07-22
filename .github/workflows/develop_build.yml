@@ -21,14 +21,14 @@ jobs:
         name: Extract Version Metadata
         id: meta
         run: |
-          $vs = "${{ github.ref_name }}".Substring(1)
-          echo "version_short=$vs" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo "version_short=000" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
       -
         name: Setup Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
           python-version: '3.12'
           architecture: x64
+          cache: 'pip'
       -
         name: Pip Install
         run: python3 -m pip install -r hydrus/static/build_files/windows/requirements.txt
@@ -98,6 +98,7 @@ jobs:
         with:
           python-version: '3.12'
           architecture: x64
+          cache: 'pip'
       -
         name: APT Install
         run: |
