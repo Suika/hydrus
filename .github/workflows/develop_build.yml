@@ -1,0 +1,237 @@
+name: Build Develop Artifacts
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    env:
+      MPV_URL: https://sourceforge.net/projects/mpv-player-windows/files/libmpv/mpv-dev-x86_64-20240818-git-a3baf94.7z
+      FFMPEG_URL: https://github.com/GyanD/codexffmpeg/releases/download/8.1.1/ffmpeg-8.1.1-full_build.7z
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          path: hydrus
+      -
+        name: Extract Version Metadata
+        id: meta
+        run: |
+          $vs = "${{ github.ref_name }}".Substring(1)
+          echo "version_short=$vs" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+      -
+        name: Setup Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
+        with:
+          python-version: '3.12'
+          architecture: x64
+      -
+        name: Pip Install
+        run: python3 -m pip install -r hydrus/static/build_files/windows/requirements.txt
+      -
+        name: Build docs to /help
+        run: mkdocs build -d help -f mkdocs-offline.yml
+        working-directory: hydrus
+      -
+        name: Cache external tools
+        id: cache-tools
+        uses: actions/cache@v6
+        with:
+          path: |
+            hydrus/libmpv-2.dll
+            hydrus/bin/ffmpeg.exe
+          key: windows-tools-${{ env.MPV_URL }}-${{ env.FFMPEG_URL }}
+      -
+        name: Download and Extract mpv-dev
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        run: |
+          Invoke-WebRequest -Uri "${{ env.MPV_URL }}" -OutFile "mpv-dev-x86_64.7z" -Headers @{ "User-Agent" = "LetMeIn" }
+          7z e mpv-dev-x86_64.7z -ohydrus "libmpv-2.dll"
+      -
+        name: Download and Extract FFmpeg
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        run: |
+          Invoke-WebRequest -Uri "${{ env.FFMPEG_URL }}" -OutFile "ffmpeg-release-full.7z"
+          7z e ffmpeg-release-full.7z -ohydrus/bin "**/bin/ffmpeg.exe"
+      -
+        name: Build Hydrus
+        run: |
+          python hydrus\static\build_files\windows\file_version_info_maker.py ${{ github.sha }}
+          copy hydrus\static\build_files\windows\hydrus.spec hydrus.spec
+          pyinstaller hydrus.spec
+      -
+        name: InnoSetup
+        run: |
+          copy hydrus\static\build_files\windows\InnoSetup.iss InnoSetup.iss
+          ISCC.exe InnoSetup.iss /DVersion=${{ github.sha }} /DVersionShort=${{ github.sha }}
+
+      -
+        name: Upload extract only artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Hydrus.Network.${{ github.sha }}.-.Windows.-.Extract.only
+          path: dist/
+
+      -
+        name: Upload install artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Hydrus.Network.${{ github.sha }}.-.Windows.-.Installer
+          path: Hydrus.Network.${{ github.sha }}.-.Windows.-.Installer.exe
+
+
+  build-ubuntu:
+    runs-on: ubuntu-24.04
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          path: hydrus
+      -
+        name: Setup Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
+        with:
+          python-version: '3.12'
+          architecture: x64
+      -
+        name: APT Install
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmpv2
+      -
+        name: Pip Install
+        run: python3 -m pip install -r hydrus/static/build_files/linux/requirements.txt
+      -
+        name: Build docs to /help
+        run: mkdocs build -d help -f mkdocs-offline.yml
+        working-directory: hydrus
+      -
+        name: Build Hydrus
+        run: |
+          cp hydrus/static/build_files/linux/hydrus.spec hydrus.spec
+          pyinstaller hydrus.spec
+      -
+        name: Remove Surplus File
+        run: |
+          rm -f "dist/Hydrus Network/"libxkbcommon.so*
+      -
+        name: Set Permissions
+        run: |
+          sudo find dist -type d -exec chmod 0755 {} \;
+
+      -
+        name: Upload executable artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Hydrus.Network.${{ github.sha }}.-.Linux.-.Executable
+          path: "dist/Hydrus Network/"
+
+
+  build-client:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      -
+        name: Docker meta
+        id: docker_meta
+        uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9 # v6
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=sha,prefix=develop-client-,format=short
+          labels: |
+            org.opencontainers.image.title=Hydrus Network
+            org.opencontainers.image.description=A personal booru-style media tagger that can import files and tags from your hard drive and popular websites.
+            org.opencontainers.image.vendor=hydrusnetwork
+      -
+        id: lowercase-repository
+        name: Cast repository name to lowercase
+        run: |
+          echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@06116385d9baf250c9f4dcb4858b16962ea869c3 # v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+      -
+        name: Login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          file: ./static/build_files/docker/client/Dockerfile
+          platforms: linux/amd64,linux/386,linux/arm/v7,linux/arm64
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          cache-from: type=registry,ref=ghcr.io/${{ steps.lowercase-repository.outputs.repository }}:buildcache-c
+          cache-to: type=registry,ref=ghcr.io/${{ steps.lowercase-repository.outputs.repository }}:buildcache-c,mode=max
+
+  build-server:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      -
+        name: Docker meta
+        id: docker_meta
+        uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9 # v6
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=sha,prefix=develop-server-,format=short
+          flavor: |
+            latest=false
+          labels: |
+            org.opencontainers.image.title=Hydrus Network Server
+            org.opencontainers.image.description=A personal booru-style media tagger that can import files and tags from your hard drive and popular websites.
+            org.opencontainers.image.vendor=hydrusnetwork
+      -
+        id: lowercase-repository
+        name: Cast repository name to lowercase
+        run: |
+          echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@06116385d9baf250c9f4dcb4858b16962ea869c3 # v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+      -
+        name: Login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          file: ./static/build_files/docker/server/Dockerfile
+          platforms: linux/amd64,linux/riscv64,linux/386,linux/arm/v6,linux/arm/v7,linux/arm64
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          cache-from: type=registry,ref=ghcr.io/${{ steps.lowercase-repository.outputs.repository }}:buildcache-s
+          cache-to: type=registry,ref=ghcr.io/${{ steps.lowercase-repository.outputs.repository }}:buildcache-s,mode=max
