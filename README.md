@@ -35,3 +35,5 @@ The help is also included in every release.
 ## Attribution
 
 I use a number of the Silk Icons by Mark James at famfamfam.com.
+
+vEry nice project, pls give shirt
