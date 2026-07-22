@@ -60,7 +60,7 @@ jobs:
       -
         name: Build Hydrus
         run: |
-          python hydrus\static\build_files\windows\file_version_info_maker.py ${{ github.sha }}
+          python hydrus\static\build_files\windows\file_version_info_maker.py ${{ env.version_short }}
           copy hydrus\static\build_files\windows\hydrus.spec hydrus.spec
           pyinstaller hydrus.spec
       -
@@ -86,6 +86,8 @@ jobs:
 
   build-ubuntu:
     runs-on: ubuntu-24.04
+    env:
+      FFMPEG_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-06-30-13-34/ffmpeg-N-125365-g9a01c1cb6a-linux64-gpl.tar.xz
     steps:
       -
         name: Checkout
@@ -111,6 +113,21 @@ jobs:
         name: Build docs to /help
         run: mkdocs build -d help -f mkdocs-offline.yml
         working-directory: hydrus
+      -
+        name: Cache external tools
+        id: cache-tools
+        uses: actions/cache@v6
+        with:
+          path: |
+            hydrus/bin/ffmpeg
+          key: ubuntu-tools-${{ env.FFMPEG_URL }}
+      -
+        name: Download and Extract FFmpeg
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        run: |
+          curl -L -o ffmpeg.tar.xz "${{ env.FFMPEG_URL }}"
+          tar -xv --file ffmpeg.tar.xz --wildcards --strip-components=2 --directory hydrus/bin '*/bin/ffmpeg'
+          chmod +x hydrus/bin/ffmpeg
       -
         name: Build Hydrus
         run: |
