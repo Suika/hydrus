@@ -1,0 +1,146 @@
+name: Build Develop Artifacts
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    env:
+      MPV_URL: https://sourceforge.net/projects/mpv-player-windows/files/libmpv/mpv-dev-x86_64-20240818-git-a3baf94.7z
+      FFMPEG_URL: https://github.com/GyanD/codexffmpeg/releases/download/8.1.1/ffmpeg-8.1.1-full_build.7z
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v7
+        with:
+          path: hydrus
+      -
+        name: Extract Version Metadata
+        id: meta
+        run: |
+          echo "version_short=000" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+      -
+        name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          architecture: x64
+          cache: 'pip'
+      -
+        name: Pip Install
+        run: python3 -m pip install -r hydrus/static/build_files/windows/requirements.txt
+      -
+        name: Build docs to /help
+        run: mkdocs build -d help -f mkdocs-offline.yml
+        working-directory: hydrus
+      -
+        name: Cache external tools
+        id: cache-tools
+        uses: actions/cache@v6
+        with:
+          path: |
+            hydrus/libmpv-2.dll
+            hydrus/bin/ffmpeg.exe
+          key: windows-tools-${{ env.MPV_URL }}-${{ env.FFMPEG_URL }}
+      -
+        name: Download and Extract mpv-dev
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        run: |
+          Invoke-WebRequest -Uri "${{ env.MPV_URL }}" -OutFile "mpv-dev-x86_64.7z" -Headers @{ "User-Agent" = "LetMeIn" }
+          7z e mpv-dev-x86_64.7z -ohydrus "libmpv-2.dll"
+      -
+        name: Download and Extract FFmpeg
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        run: |
+          Invoke-WebRequest -Uri "${{ env.FFMPEG_URL }}" -OutFile "ffmpeg-release-full.7z"
+          7z e ffmpeg-release-full.7z -ohydrus/bin "**/bin/ffmpeg.exe"
+      -
+        name: Build Hydrus
+        run: |
+          python hydrus\static\build_files\windows\file_version_info_maker.py ${{ env.version_short }}
+          copy hydrus\static\build_files\windows\hydrus.spec hydrus.spec
+          pyinstaller hydrus.spec
+      -
+        name: InnoSetup
+        run: |
+          copy hydrus\static\build_files\windows\InnoSetup.iss InnoSetup.iss
+          ISCC.exe InnoSetup.iss /DVersion=${{ github.sha }} /DVersionShort=${{ github.sha }}
+      -
+        name: Upload extract only artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Hydrus.Network.${{ github.sha }}.-.Windows.-.Extract.only
+          path: dist/
+      -
+        name: Upload install artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Hydrus.Network.${{ github.sha }}.-.Windows.-.Installer
+          path: Hydrus.Network.${{ github.sha }}.-.Windows.-.Installer.exe
+
+  build-ubuntu:
+    runs-on: ubuntu-24.04
+    env:
+      FFMPEG_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-06-30-13-34/ffmpeg-N-125365-g9a01c1cb6a-linux64-gpl.tar.xz
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v7
+        with:
+          path: hydrus
+      -
+        name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          architecture: x64
+          cache: 'pip'
+      -
+        name: APT Install
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmpv2
+      -
+        name: Pip Install
+        run: python3 -m pip install -r hydrus/static/build_files/linux/requirements.txt
+      -
+        name: Build docs to /help
+        run: mkdocs build -d help -f mkdocs-offline.yml
+        working-directory: hydrus
+      -
+        name: Cache external tools
+        id: cache-tools
+        uses: actions/cache@v6
+        with:
+          path: |
+            hydrus/bin/ffmpeg
+          key: ubuntu-tools-${{ env.FFMPEG_URL }}
+      -
+        name: Download and Extract FFmpeg
+        if: steps.cache-tools.outputs.cache-hit != 'true'
+        run: |
+          curl -L -o ffmpeg.tar.xz "${{ env.FFMPEG_URL }}"
+          tar -xv --file ffmpeg.tar.xz --wildcards --strip-components=2 --directory hydrus/bin '*/bin/ffmpeg'
+          chmod +x hydrus/bin/ffmpeg
+      -
+        name: Build Hydrus
+        run: |
+          cp hydrus/static/build_files/linux/hydrus.spec hydrus.spec
+          pyinstaller hydrus.spec
+      -
+        name: Remove Surplus File
+        run: |
+          rm -f "dist/Hydrus Network/"libxkbcommon.so*
+      -
+        name: Set Permissions
+        run: |
+          sudo find dist -type d -exec chmod 0755 {} \;
+      -
+        name: Upload executable artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Hydrus.Network.${{ github.sha }}.-.Linux.-.Executable
+          path: "dist/Hydrus Network/"
